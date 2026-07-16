@@ -309,7 +309,18 @@ export default function Courses() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: idx * 0.05 }}
-            whileHover={{ y: -6, transition: { duration: 0.2 } }}
+            
+            // A MÁGICA DIAGONAL AQUI:
+            whileHover={{ 
+              y: -8, // Move 8 pixels para CIMA
+              x: 8,  // Move 8 pixels para a DIREITA
+              transition: { duration: 0.25, ease: "easeOut" } 
+            }}
+
+            style={{
+              boxShadow: "0px 0px 0px rgba(0,0,0,0)"
+            }}
+            whileTap={{ scale: 0.98 }} // Leve clique ao pressionar
           >
             {/* Esfumaçado de fundo individualizado */}
             <GlowBackground glowColor={course.color} />
