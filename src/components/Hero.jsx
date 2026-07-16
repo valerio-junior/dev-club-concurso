@@ -31,6 +31,62 @@ const CanvasStyled = styled.canvas`
   display: block;
 `;
 
+const SocialProofContainer = styled(motion.div)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 2;
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.8rem 1.6rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+`;
+
+const AvatarStack = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Avatar = styled.img`
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #030308;
+  object-fit: cover;
+  margin-left: -12px; // Efeito de sobreposição elegante
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
+  transition: transform 0.3s ease, z-index 0.3s ease;
+  cursor: pointer;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:hover {
+    transform: translateY(-4px) scale(1.1);
+    z-index: 10;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+  }
+`;
+
+const ProofText = styled.span`
+  font-size: 0.9rem;
+  color: #c9d1d9;
+  letter-spacing: 1px;
+  font-weight: 700;
+  
+  span {
+    background: linear-gradient(to right, #00f2fe, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+  }
+`;
+
 const Subtitle = styled(motion.p)`
   font-size: 1rem;
   color: #5a6578;
@@ -53,6 +109,9 @@ const ScrollIndicator = styled(motion.div)`
   color: #00F2FE;
   cursor: pointer;
   z-index: 2;
+
+
+  
   font-size: 0.8rem;
   letter-spacing: 2px;
 `;
@@ -275,20 +334,30 @@ export default function Hero() {
         <CanvasStyled ref={canvasRef} />
       </CanvasContainer>
 
-      <Subtitle
+      {/* Seção de Prova Social Substituindo o texto estático anterior */}
+      <SocialProofContainer
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 1.5 }}
       >
-        FORJANDO OS DESENVOLVEDORES DO FUTURO. CLIQUE PARA EXPLODIR.
-      </Subtitle>
+        <AvatarStack>
+          <Avatar src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Aluna DevClub" />
+          <Avatar src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Aluno DevClub" />
+          <Avatar src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Aluna DevClub" />
+          <Avatar src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" alt="Aluno DevClub" />
+          <Avatar src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format&fit=crop&q=80" alt="Aluna DevClub" />
+        </AvatarStack>
+        <ProofText>
+          <span>+30 mil</span> alunos já passaram por aqui
+        </ProofText>
+      </SocialProofContainer>
 
       <ScrollIndicator
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
       >
-        <span>ROLE PARA EXPLORAR</span>
+        
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
