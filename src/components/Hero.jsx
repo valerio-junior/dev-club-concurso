@@ -348,7 +348,7 @@ export default function Hero() {
           <Avatar src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format&fit=crop&q=80" alt="Aluna DevClub" />
         </AvatarStack>
         <ProofText>
-          <span>+30 mil</span> alunos já passaram por aqui
+          <span>+25 mil</span> alunos já passaram por aqui
         </ProofText>
       </SocialProofContainer>
 

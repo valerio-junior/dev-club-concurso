@@ -18,7 +18,7 @@ const NavContainer = styled(motion.nav)`
   align-items: center;
   padding: 0 4rem;
   z-index: 1000;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Roboto', sans-serif;
 
   @media (max-width: 1024px) {
     padding: 0 2rem;

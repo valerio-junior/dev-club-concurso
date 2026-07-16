@@ -4,6 +4,7 @@ import Hero from './components/Hero'
 import Navbar from './components/NavBar'
 import { GlobalStyles } from './styles/GlobalStyles'
 import Partners from './components/Partners'
+import Courses from './components/Courses'
 // import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
@@ -12,5 +13,6 @@ createRoot(document.getElementById('root')).render(
     <Navbar />
     <Hero />
     <Partners />
+    <Courses />
   </StrictMode>,
 )
