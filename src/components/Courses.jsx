@@ -1,24 +1,35 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { 
   Code, Globe, Layout, Paintbrush, FileJson, GitBranch, 
   Layers, ShieldAlert, Server, Cpu, Terminal, BarChart3 
 } from 'lucide-react';
 
-const SectionContainer = styled.section`
+// Área de rolagem total confortável para a animação respirar
+const ScrollWrapper = styled.div`
   width: 100%;
+  height: 320vh; 
   background-color: #030308;
-  padding: 8rem 4rem;
+  position: relative;
+`;
+
+// Container fixo ajustado para dar foco total ao Grid
+const StickyContainer = styled.div`
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  padding: 3rem 4rem 2rem 4rem; /* Reduzido o topo ligeiramente para ganhar espaço de tela */
   display: flex;
   flex-direction: column;
-  position: relative;
+  justify-content: flex-start;
+  overflow: hidden;
   font-family: 'Roboto', sans-serif;
   color: #ffffff;
-  overflow: hidden;
 
   @media (max-width: 1024px) {
-    padding: 6rem 2rem;
+    padding: 2rem 2rem;
   }
 `;
 
@@ -27,20 +38,21 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 4rem;
-  margin-bottom: 5rem;
+  gap: 2rem;
+  margin-bottom: 1.5rem; /* Menor margem para empurrar o grid para cima */
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding-bottom: 3rem;
+  padding-bottom: 1rem;
 
   @media (max-width: 900px) {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
 const HeaderLeft = styled(motion.h2)`
   flex: 1.2;
-  font-size: 2.2rem;
+  font-size: 1.7rem; /* Leve ajuste no tamanho */
   font-weight: 900;
   line-height: 1.3;
   letter-spacing: 1px;
@@ -53,15 +65,11 @@ const HeaderLeft = styled(motion.h2)`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-
-  @media (max-width: 1200px) {
-    font-size: 1.8rem;
-  }
 `;
 
 const HeaderRight = styled(motion.p)`
   flex: 0.8;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   color: #8b9bb4;
   line-height: 1.6;
   letter-spacing: 0.5px;
@@ -73,11 +81,14 @@ const HeaderRight = styled(motion.p)`
   }
 `;
 
-const CardsGrid = styled.div`
+const CardsGrid = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  gap: 1rem; 
   width: 100%;
+  flex: 1; 
+  position: relative;
+  transform-origin: center top; /* Garante que o zoom out seja feito a partir do topo */
 
   @media (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
@@ -92,73 +103,71 @@ const CardsGrid = styled.div`
   }
 `;
 
-// Componentes internos de apoio ao Card
 const GlowBackground = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 140px; // Delimita o esfumaçado exatamente até passar do ícone
+  height: 100px;
   background: radial-gradient(circle at 50% 0%, ${props => props.glowColor} 0%, transparent 70%);
-  opacity: 0.15; // Opacidade sutil padrão
+  opacity: 0.15;
   transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 0;
 `;
 
 const IconWrapper = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 38px; 
+  height: 38px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8b9bb4; // Inicialmente cinza metálico discreto
+  color: #8b9bb4;
   z-index: 1;
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
   }
 `;
 
 const CardTitle = styled.h4`
-  font-size: 1.1rem;
+  font-size: 0.95rem; 
   font-weight: 800;
   letter-spacing: 1px;
-  color: #ffffff; // Cor neutra inicial
+  color: #ffffff;
   margin: 0;
   z-index: 1;
   transition: color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 `;
 
 const CardDescription = styled.p`
-  font-size: 0.85rem;
+  font-size: 0.75rem; 
   color: #8b9bb4;
-  line-height: 1.6;
+  line-height: 1.4;
   margin: 0;
   font-weight: 500;
   z-index: 1;
 `;
 
-// Nova borda dinâmica usando a cor específica da skill
 const DynamicBorderGlow = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 16px;
+  border-radius: 14px;
   border: 1.5px solid transparent;
   background: linear-gradient(135deg, ${props => props.glowColor} 0%, rgba(255,255,255,0.05) 100%) border-box;
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  opacity: 0.15; // Deixa um contorno sutil já no início
+  opacity: 0.15;
   transition: all 0.4s ease;
   pointer-events: none;
 `;
@@ -166,197 +175,126 @@ const DynamicBorderGlow = styled.div`
 const Card = styled(motion.div)`
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.03);
-  border-radius: 16px;
-  padding: 2rem;
+  border-radius: 14px;
+  padding: 1rem 1.2rem; /* Compactado levemente para encaixar em telas menores */
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.6rem;
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(10px);
   cursor: pointer;
   height: 100%;
 
-  // HOVER STATE: Modifica elementos internos de forma sincronizada
   &:hover {
-    ${GlowBackground} {
-      opacity: 0.35; // Intensifica o esfumaçado específico no topo
-    }
-
-    ${DynamicBorderGlow} {
-      opacity: 1; // Ativa a borda brilhante
-    }
-
+    ${GlowBackground} { opacity: 0.35; }
+    ${DynamicBorderGlow} { opacity: 1; }
     ${IconWrapper} {
-      color: ${props => props.themeColor}; // Muda cor do ícone
-      background: ${props => props.themeColor}15; // Fundo do ícone com 15% de opacidade
-      border-color: ${props => props.themeColor}40; // Borda do ícone
+      color: ${props => props.themeColor};
+      background: ${props => props.themeColor}15;
+      border-color: ${props => props.themeColor}40;
       box-shadow: 0 0 15px ${props => props.themeColor}30;
       transform: translateY(-2px);
     }
-
     ${CardTitle} {
-      color: ${props => props.themeColor}; // Título herda cor idêntica ao esfumaçado
+      color: ${props => props.themeColor};
       text-shadow: 0 0 10px ${props => props.themeColor}20;
     }
   }
 `;
 
+// Animação original preservada intocável
+const AnimatedCardWrapper = ({ children, index, total, scrollProgress }) => {
+  const startInterval = (index / total) * 0.72; 
+  const endInterval = startInterval + 0.12;
+
+  const x = useTransform(scrollProgress, [0, startInterval, endInterval], ["100vw", "100vw", "0%"]);
+  const y = useTransform(scrollProgress, [0, startInterval, endInterval], ["80vh", "80vh", "0vh"]);
+  const scale = useTransform(scrollProgress, [0, startInterval, endInterval], [0.4, 0.4, 1]);
+  const opacity = useTransform(scrollProgress, [0, startInterval, endInterval], [0, 0, 1]);
+  const rotate = useTransform(scrollProgress, [0, startInterval, endInterval], [25, 25, 0]);
+
+  return (
+    <motion.div style={{ x, y, scale, opacity, rotate, height: '100%' }}>
+      {children}
+    </motion.div>
+  );
+};
+
 export default function Courses() {
+  const containerRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0.9]);
+
+  // AJUSTE CRÍTICO: O grid agora vai subir um pouco mais agressivamente conforme a rolagem chega ao final
+  const gridY = useTransform(scrollYProgress, [0, 0.35, 0.95], ["0vh", "0vh", "-26vh"]);
   
+  // SOLUÇÃO DEFINITIVA: Diminui sutilmente o grid de 100% para 90% do tamanho original na reta final.
+  // Isso força mecanicamente a terceira linha a ficar inteiramente visível dentro do limite do monitor!
+  const gridScale = useTransform(scrollYProgress, [0, 0.4, 0.95], [1, 1, 0.9]);
+
   const coursesData = [
-    {
-      title: "Formação Front-end",
-      description: "Trilhe a linha completa para se tornar um desenvolvedor web especialista em criar experiências incríveis na tela.",
-      icon: <Layout />,
-      color: "#00f2fe" 
-    },
-    {
-      title: "Desenvolvedor Fullstack",
-      description: "Domine o ecossistema completo de desenvolvimento, integrando perfeitamente a lógica do servidor com as interfaces web.",
-      icon: <Globe />,
-      color: "#7f00ff" 
-    },
-    {
-      title: "HTML",
-      description: "Aprenda HTML com a melhor didática e projetos reais estruturados para consolidar o seu aprendizado definitivo.",
-      icon: <Code />,
-      color: "#e34f26" 
-    },
-    {
-      title: "CSS",
-      description: "Aprenda a estilizar suas páginas de forma totalmente profissional utilizando projetos práticos e layouts inovadores.",
-      icon: <Paintbrush />,
-      color: "#1572b6"
-    },
-    {
-      title: "JavaScript",
-      description: "Descubra o poder da linguagem que move a web moderna, dominando lógica de programação e manipulações dinâmicas de dados.",
-      icon: <FileJson />,
-      color: "#f7df1e"
-    },
-    {
-      title: "Git e GitHub",
-      description: "Gerencie o histórico do seu código e domine o trabalho colaborativo em equipe utilizando a principal ferramenta corporativa do planeta.",
-      icon: <GitBranch />,
-      color: "#f05032"
-    },
-    {
-      title: "React",
-      description: "Desenvolva aplicações de alto desempenho baseadas em componentes reutilizáveis utilizando a biblioteca criada pelo Facebook.",
-      icon: <Layers />,
-      color: "#61dafb"
-    },
-    {
-      title: "TypeScript",
-      description: "Escreva códigos JavaScript mais seguros, organizados e fáceis de manter no futuro adicionando tipagem estática e robustez aos projetos.",
-      icon: <ShieldAlert />,
-      color: "#3178c6"
-    },
-    {
-      title: "Node.js",
-      description: "Construa APIs escaláveis de alta performance no backend utilizando JavaScript, bancos de dados modernos e arquiteturas de ponta.",
-      icon: <Server />,
-      color: "#339933"
-    },
-    {
-      title: "N8N",
-      description: "Aprenda a criar automações robustas sem limites de código, conectando aplicações inteiras e automatizando processos de forma inteligente.",
-      icon: <Cpu />,
-      color: "#ff6c37"
-    },
-    {
-      title: "Python",
-      description: "Domine a linguagem mais versátil do mercado e aprenda a criar scripts, automatizar rotinas e desenvolver soluções inteligentes e rápidas.",
-      icon: <Terminal />,
-      color: "#3776ab"
-    },
-    {
-      title: "Análise de Dados",
-      description: "Converta fluxos massivos de informações em inteligência estratégica utilizando as principais ferramentas do mercado corporativo.",
-      icon: <BarChart3 />,
-      color: "#00d28a"
-    }
+    { title: "Formação Front-end", description: "Trilhe a linha completa para se tornar um desenvolvedor especialista em criar experiências incríveis.", icon: <Layout />, color: "#00f2fe" },
+    { title: "Desenvolvedor Fullstack", description: "Domine o ecossistema completo, integrando perfeitamente a lógica do servidor com as interfaces web.", icon: <Globe />, color: "#7f00ff" },
+    { title: "HTML", description: "Aprenda HTML com a melhor didática e projetos reais estruturados para consolidar o seu aprendizado.", icon: <Code />, color: "#e34f26" },
+    { title: "CSS", description: "Aprenda a estilizar suas páginas de forma totalmente profissional utilizando layouts inovadores.", icon: <Paintbrush />, color: "#1572b6" },
+    { title: "JavaScript", description: "Descubra o poder da linguagem que move a web moderna, dominando lógica e manipulações de dados.", icon: <FileJson />, color: "#f7df1e" },
+    { title: "Git e GitHub", description: "Gerencie o histórico do seu código e domine o trabalho colaborativo utilizando a ferramenta padrão do mercado.", icon: <GitBranch />, color: "#f05032" },
+    { title: "React", description: "Desenvolva aplicações de alto desempenho baseadas em componentes reutilizáveis usando a biblioteca líder.", icon: <Layers />, color: "#61dafb" },
+    { title: "TypeScript", description: "Escreva códigos JavaScript mais seguros, organizados e fáceis de manter adicionando tipagem estática.", icon: <ShieldAlert />, color: "#3178c6" },
+    { title: "Node.js", description: "Construa APIs escaláveis de alta performance no backend utilizando JavaScript e bancos de dados modernos.", icon: <Server />, color: "#339933" },
+    { title: "N8N", description: "Aprenda a criar automações robustas sem limites de código, conectando aplicações inteiras estrategicamente.", icon: <Cpu />, color: "#ff6c37" },
+    { title: "Python", description: "Domine a linguagem mais versátil do mercado e aprenda a criar scripts e automatizar rotinas inteligentes.", icon: <Terminal />, color: "#3776ab" },
+    { title: "Análise de Dados", description: "Converta fluxos massivos de informações em inteligência estratégica utilizando as principais ferramentas.", icon: <BarChart3 />, color: "#00d28a" }
   ];
 
   return (
-    <SectionContainer id="formacoes-section">
-      <HeaderContainer>
-        <HeaderLeft
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-        >
-          Formações e Trilhas para você <span>não se perder no caminho</span> e traçar uma linha direta.
-        </HeaderLeft>
-        <HeaderRight
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          E com os melhores professores e didáticas que fazem você vir do completo zero ao nível avançado pronto para o mercado de trabalho.
-        </HeaderRight>
-      </HeaderContainer>
+    <ScrollWrapper ref={containerRef} id="formacoes-section">
+      <StickyContainer>
+        <motion.div style={{ opacity: headerOpacity }}>
+          <HeaderContainer>
+            <HeaderLeft>
+              Formações e Trilhas para você <span>não se perder no caminho</span> e traçar uma linha direta.
+            </HeaderLeft>
+            <HeaderRight>
+              Didáticas que fazem você vir do completo zero ao nível avançado pronto para o mercado de trabalho.
+            </HeaderRight>
+          </HeaderContainer>
+        </motion.div>
 
-      <CardsGrid>
-        {coursesData.map((course, idx) => (
-          <Card
-            key={idx}
-            themeColor={course.color}
-            
-    
-            initial={{ 
-              opacity: 0, 
-              x: idx % 2 === 0 ? -80 : 80, 
-              y: 20 
-            }}
-            
-           
-            whileInView={{ 
-              opacity: 1, 
-              x: 0, 
-              y: 0 
-            }}
-            
-           
-            viewport={{ once: true, margin: "-80px" }}
-            
-            
-            transition={{ 
-              type: "spring",
-              stiffness: 50,
-              damping: 15,
-              delay: (idx % 4) * 0.1 
-            }}
-            
-            
-            whileHover={{ 
-              y: -8, 
-              x: 8,  
-              transition: { duration: 0.25, ease: "easeOut" } 
-            }}
-            style={{
-              boxShadow: "0px 0px 0px rgba(0,0,0,0)"
-            }}
-            whileTap={{ scale: 0.98 }}
-          >
-            
-            <GlowBackground glowColor={course.color} />
-            
-            
-            <DynamicBorderGlow glowColor={course.color} />
-
-            <IconWrapper>
-              {course.icon}
-            </IconWrapper>
-            
-            <CardTitle>{course.title}</CardTitle>
-            <CardDescription>{course.description}</CardDescription>
-          </Card>
-        ))}
-      </CardsGrid>
-    </SectionContainer>
+        {/* Aplicando a subida Y combinada com o recuo sutil de Scale para liberar o topo e rodapé */}
+        <CardsGrid style={{ y: gridY, scale: gridScale }}>
+          {coursesData.map((course, idx) => (
+            <AnimatedCardWrapper
+              key={idx}
+              index={idx}
+              total={coursesData.length}
+              scrollProgress={scrollYProgress}
+            >
+              <Card
+                themeColor={course.color}
+                whileHover={{ 
+                  y: -6, 
+                  x: 6,  
+                  transition: { duration: 0.2, ease: "easeOut" } 
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <GlowBackground glowColor={course.color} />
+                <DynamicBorderGlow glowColor={course.color} />
+                <IconWrapper>{course.icon}</IconWrapper>
+                <CardTitle>{course.title}</CardTitle>
+                <CardDescription>{course.description}</CardDescription>
+              </Card>
+            </AnimatedCardWrapper>
+          ))}
+        </CardsGrid>
+      </StickyContainer>
+    </ScrollWrapper>
   );
 }
