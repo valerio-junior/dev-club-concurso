@@ -5,7 +5,7 @@ import Navbar from './components/NavBar'
 import { GlobalStyles } from './styles/GlobalStyles'
 import Partners from './components/Partners'
 import Courses from './components/Courses'
-// import App from './App.jsx'
+import AISection from './components/IaTraining'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,5 +14,6 @@ createRoot(document.getElementById('root')).render(
     <Hero />
     <Partners />
     <Courses />
+    <AISection />
   </StrictMode>,
 )

@@ -194,13 +194,6 @@ const PrimaryButton = styled(motion.button)`
 export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState(null);
 
-  const handleScrollTo = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <NavContainer
       initial={{ y: -100, opacity: 0 }}
@@ -283,7 +276,7 @@ export default function Navbar() {
 
       {/* 4° & 5° Lado Direito: Área do aluno e Chamada de Ação */}
       <ActionArea>
-        <StudentAreaLink href="#login">
+        <StudentAreaLink href="#">
           ÁREA DO ALUNO <User size={16} />
         </StudentAreaLink>
 

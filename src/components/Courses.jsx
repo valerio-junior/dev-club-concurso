@@ -57,12 +57,6 @@ const HeaderLeft = styled(motion.h2)`
   background: linear-gradient(135deg, #ffffff 0%, #8b9bb4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
-  span {
-    background: linear-gradient(135deg, #00f2fe 0%, #7f00ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
 `;
 
 const HeaderRight = styled(motion.p)`
@@ -205,8 +199,8 @@ const AnimatedCardWrapper = ({ children, index, total, scrollProgress }) => {
   const startInterval = (index / total) * 0.72; 
   const endInterval = startInterval + 0.12;
 
-  // O pulo do gato está aqui: as transformações agora escutam o "smoothProgress",
-  // o que remove o aspecto robotizado e deixa as curvas de entrada hiper fluidas.
+  // as transformações agora escutam o "smoothProgress",
+  // o que remove o aspecto robotizado e deixa as curvas de entrada fluidas.
   const x = useTransform(scrollProgress, [0, startInterval, endInterval], ["100vw", "100vw", "0%"]);
   const y = useTransform(scrollProgress, [0, startInterval, endInterval], ["80vh", "80vh", "0vh"]);
   const scale = useTransform(scrollProgress, [0, startInterval, endInterval], [0.4, 0.4, 1]);
@@ -228,9 +222,7 @@ export default function Courses() {
     offset: ["start start", "end end"]
   });
 
-  // Criamos uma mola física ultra-responsiva em cima do scroll puro.
-  // damping: 24 (controla a oscilação, evitando que fique balançando feito gelatina)
-  // stiffness: 110 (velocidade de resposta para acompanhar o dedo instantaneamente)
+
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 110,
     damping: 24,
