@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { 
   Code, Globe, Layout, Paintbrush, FileJson, GitBranch, 
   Layers, ShieldAlert, Server, Cpu, Terminal, BarChart3 
 } from 'lucide-react';
 
-// Área de rolagem total confortável para a animação respirar
 const ScrollWrapper = styled.div`
   width: 100%;
   height: 320vh; 
@@ -14,13 +13,12 @@ const ScrollWrapper = styled.div`
   position: relative;
 `;
 
-// Container fixo ajustado para dar foco total ao Grid
 const StickyContainer = styled.div`
   position: sticky;
   top: 0;
   width: 100%;
   height: 100vh;
-  padding: 3rem 4rem 2rem 4rem; /* Reduzido o topo ligeiramente para ganhar espaço de tela */
+  padding: 3rem 4rem 2rem 4rem; 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -39,7 +37,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   gap: 2rem;
-  margin-bottom: 1.5rem; /* Menor margem para empurrar o grid para cima */
+  margin-bottom: 1.5rem; 
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding-bottom: 1rem;
 
@@ -52,7 +50,7 @@ const HeaderContainer = styled.div`
 
 const HeaderLeft = styled(motion.h2)`
   flex: 1.2;
-  font-size: 1.7rem; /* Leve ajuste no tamanho */
+  font-size: 1.7rem; 
   font-weight: 900;
   line-height: 1.3;
   letter-spacing: 1px;
@@ -88,7 +86,7 @@ const CardsGrid = styled(motion.div)`
   width: 100%;
   flex: 1; 
   position: relative;
-  transform-origin: center top; /* Garante que o zoom out seja feito a partir do topo */
+  transform-origin: center top; 
 
   @media (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
@@ -176,7 +174,7 @@ const Card = styled(motion.div)`
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.03);
   border-radius: 14px;
-  padding: 1rem 1.2rem; /* Compactado levemente para encaixar em telas menores */
+  padding: 1rem 1.2rem; 
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -203,11 +201,12 @@ const Card = styled(motion.div)`
   }
 `;
 
-// Animação original preservada intocável
 const AnimatedCardWrapper = ({ children, index, total, scrollProgress }) => {
   const startInterval = (index / total) * 0.72; 
   const endInterval = startInterval + 0.12;
 
+  // O pulo do gato está aqui: as transformações agora escutam o "smoothProgress",
+  // o que remove o aspecto robotizado e deixa as curvas de entrada hiper fluidas.
   const x = useTransform(scrollProgress, [0, startInterval, endInterval], ["100vw", "100vw", "0%"]);
   const y = useTransform(scrollProgress, [0, startInterval, endInterval], ["80vh", "80vh", "0vh"]);
   const scale = useTransform(scrollProgress, [0, startInterval, endInterval], [0.4, 0.4, 1]);
@@ -229,14 +228,18 @@ export default function Courses() {
     offset: ["start start", "end end"]
   });
 
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0.9]);
+  // Criamos uma mola física ultra-responsiva em cima do scroll puro.
+  // damping: 24 (controla a oscilação, evitando que fique balançando feito gelatina)
+  // stiffness: 110 (velocidade de resposta para acompanhar o dedo instantaneamente)
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 110,
+    damping: 24,
+    restDelta: 0.001
+  });
 
-  // AJUSTE CRÍTICO: O grid agora vai subir um pouco mais agressivamente conforme a rolagem chega ao final
-  const gridY = useTransform(scrollYProgress, [0, 0.35, 0.95], ["0vh", "0vh", "-26vh"]);
-  
-  // SOLUÇÃO DEFINITIVA: Diminui sutilmente o grid de 100% para 90% do tamanho original na reta final.
-  // Isso força mecanicamente a terceira linha a ficar inteiramente visível dentro do limite do monitor!
-  const gridScale = useTransform(scrollYProgress, [0, 0.4, 0.95], [1, 1, 0.9]);
+  const headerOpacity = useTransform(smoothProgress, [0, 0.15], [1, 0.9]);
+  const gridY = useTransform(smoothProgress, [0, 0.35, 0.95], ["0vh", "0vh", "-26vh"]);
+  const gridScale = useTransform(smoothProgress, [0, 0.4, 0.95], [1, 1, 0.9]);
 
   const coursesData = [
     { title: "Formação Front-end", description: "Trilhe a linha completa para se tornar um desenvolvedor especialista em criar experiências incríveis.", icon: <Layout />, color: "#00f2fe" },
@@ -267,14 +270,14 @@ export default function Courses() {
           </HeaderContainer>
         </motion.div>
 
-        {/* Aplicando a subida Y combinada com o recuo sutil de Scale para liberar o topo e rodapé */}
+        {/* Passando o smoothProgress para os cards também */}
         <CardsGrid style={{ y: gridY, scale: gridScale }}>
           {coursesData.map((course, idx) => (
             <AnimatedCardWrapper
               key={idx}
               index={idx}
               total={coursesData.length}
-              scrollProgress={scrollYProgress}
+              scrollProgress={smoothProgress}
             >
               <Card
                 themeColor={course.color}
