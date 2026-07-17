@@ -334,7 +334,7 @@ export default function Hero() {
         <CanvasStyled ref={canvasRef} />
       </CanvasContainer>
 
-      {/* Seção de Prova Social Substituindo o texto estático anterior */}
+      
       <SocialProofContainer
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -143,7 +143,7 @@ export default function Partners() {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 1 }}
       >
-        Venha fazer parte da nossa equipe e trabalhe em empresas como:
+        Venha ser nosso aluno e trabalhe em empresas como:
       </Title>
 
       <MarqueeContainer>

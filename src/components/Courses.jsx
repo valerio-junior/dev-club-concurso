@@ -203,79 +203,79 @@ const Card = styled(motion.div)`
 `;
 
 export default function Courses() {
-  // Lista com as 12 formações requisitadas e suas cores exclusivas em HEX
+  
   const coursesData = [
     {
       title: "Formação Front-end",
       description: "Trilhe a linha completa para se tornar um desenvolvedor web especialista em criar experiências incríveis na tela.",
       icon: <Layout />,
-      color: "#00f2fe" // Ciano Elétrico
+      color: "#00f2fe" 
     },
     {
       title: "Desenvolvedor Fullstack",
       description: "Domine o ecossistema completo de desenvolvimento, integrando perfeitamente a lógica do servidor com as interfaces web.",
       icon: <Globe />,
-      color: "#7f00ff" // Roxo Neon
+      color: "#7f00ff" 
     },
     {
       title: "HTML",
       description: "Aprenda HTML com a melhor didática e projetos reais estruturados para consolidar o seu aprendizado definitivo.",
       icon: <Code />,
-      color: "#e34f26" // Laranja HTML5
+      color: "#e34f26" 
     },
     {
       title: "CSS",
       description: "Aprenda a estilizar suas páginas de forma totalmente profissional utilizando projetos práticos e layouts inovadores.",
       icon: <Paintbrush />,
-      color: "#1572b6" // Azul CSS3
+      color: "#1572b6"
     },
     {
       title: "JavaScript",
       description: "Descubra o poder da linguagem que move a web moderna, dominando lógica de programação e manipulações dinâmicas de dados.",
       icon: <FileJson />,
-      color: "#f7df1e" // Amarelo JS
+      color: "#f7df1e"
     },
     {
       title: "Git e GitHub",
       description: "Gerencie o histórico do seu código e domine o trabalho colaborativo em equipe utilizando a principal ferramenta corporativa do planeta.",
       icon: <GitBranch />,
-      color: "#f05032" // Vermelho Git
+      color: "#f05032"
     },
     {
       title: "React",
       description: "Desenvolva aplicações de alto desempenho baseadas em componentes reutilizáveis utilizando a biblioteca criada pelo Facebook.",
       icon: <Layers />,
-      color: "#61dafb" // Azul Claro React
+      color: "#61dafb"
     },
     {
       title: "TypeScript",
       description: "Escreva códigos JavaScript mais seguros, organizados e fáceis de manter no futuro adicionando tipagem estática e robustez aos projetos.",
       icon: <ShieldAlert />,
-      color: "#3178c6" // Azul TypeScript
+      color: "#3178c6"
     },
     {
       title: "Node.js",
       description: "Construa APIs escaláveis de alta performance no backend utilizando JavaScript, bancos de dados modernos e arquiteturas de ponta.",
       icon: <Server />,
-      color: "#339933" // Verde Node
+      color: "#339933"
     },
     {
       title: "N8N",
       description: "Aprenda a criar automações robustas sem limites de código, conectando aplicações inteiras e automatizando processos de forma inteligente.",
       icon: <Cpu />,
-      color: "#ff6c37" // Laranja/Vermelho N8N
+      color: "#ff6c37"
     },
     {
       title: "Python",
       description: "Domine a linguagem mais versátil do mercado e aprenda a criar scripts, automatizar rotinas e desenvolver soluções inteligentes e rápidas.",
       icon: <Terminal />,
-      color: "#3776ab" // Azul/Amarelo Python
+      color: "#3776ab"
     },
     {
       title: "Análise de Dados",
       description: "Converta fluxos massivos de informações em inteligência estratégica utilizando as principais ferramentas do mercado corporativo.",
       icon: <BarChart3 />,
-      color: "#00d28a" // Verde Esmeralda Analytics
+      color: "#00d28a"
     }
   ];
 
@@ -304,28 +304,48 @@ export default function Courses() {
         {coursesData.map((course, idx) => (
           <Card
             key={idx}
-            themeColor={course.color} // Injeta a cor temática para o hover
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: idx * 0.05 }}
+            themeColor={course.color}
             
-            // A MÁGICA DIAGONAL AQUI:
+    
+            initial={{ 
+              opacity: 0, 
+              x: idx % 2 === 0 ? -80 : 80, 
+              y: 20 
+            }}
+            
+           
+            whileInView={{ 
+              opacity: 1, 
+              x: 0, 
+              y: 0 
+            }}
+            
+           
+            viewport={{ once: true, margin: "-80px" }}
+            
+            
+            transition={{ 
+              type: "spring",
+              stiffness: 50,
+              damping: 15,
+              delay: (idx % 4) * 0.1 
+            }}
+            
+            
             whileHover={{ 
-              y: -8, // Move 8 pixels para CIMA
-              x: 8,  // Move 8 pixels para a DIREITA
+              y: -8, 
+              x: 8,  
               transition: { duration: 0.25, ease: "easeOut" } 
             }}
-
             style={{
               boxShadow: "0px 0px 0px rgba(0,0,0,0)"
             }}
-            whileTap={{ scale: 0.98 }} // Leve clique ao pressionar
+            whileTap={{ scale: 0.98 }}
           >
-            {/* Esfumaçado de fundo individualizado */}
+            
             <GlowBackground glowColor={course.color} />
             
-            {/* Contorno sutil/brilhante dinâmico */}
+            
             <DynamicBorderGlow glowColor={course.color} />
 
             <IconWrapper>
