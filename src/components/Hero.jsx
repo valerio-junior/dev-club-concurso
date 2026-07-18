@@ -57,7 +57,7 @@ const Avatar = styled.img`
   border-radius: 50%;
   border: 2px solid #030308;
   object-fit: cover;
-  margin-left: -12px; // Efeito de sobreposição elegante
+  margin-left: -12px;
   box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
   transition: transform 0.3s ease, z-index 0.3s ease;
   cursor: pointer;
@@ -87,18 +87,6 @@ const ProofText = styled.span`
   }
 `;
 
-const Subtitle = styled(motion.p)`
-  font-size: 1rem;
-  color: #5a6578;
-  text-align: center;
-  max-width: 600px;
-  line-height: 1.6;
-  z-index: 2;
-  margin-top: 1rem;
-  letter-spacing: 4px;
-  font-weight: 700;
-`;
-
 const ScrollIndicator = styled(motion.div)`
   position: absolute;
   bottom: 2rem;
@@ -109,9 +97,6 @@ const ScrollIndicator = styled(motion.div)`
   color: #00F2FE;
   cursor: pointer;
   z-index: 2;
-
-
-  
   font-size: 0.8rem;
   letter-spacing: 2px;
 `;
@@ -136,7 +121,6 @@ export default function Hero() {
     };
     resizeCanvas();
 
-    // Canvas temporário para mapear os pontos do DEVCLUB
     const tempCanvas = document.createElement('canvas');
     const tempCtx = tempCanvas.getContext('2d');
     tempCanvas.width = 800;
@@ -165,14 +149,17 @@ export default function Hero() {
       }
     }
 
-    // Controle refinado dos tempos do ciclo (Baseado em 60 FPS)
     let cycleTimer = 0;
     let globalAngleY = 0; 
+    let globalAngleX = 0; 
+    let isFirstLoad = true; 
     
-    const DECAY_TIME = 120;       // 2 segundos se desintegrando e flutuando livremente
-    const ATTRACT_TIME = 90;      // 1.5 segundos voando em direção às letras
-    const HOLD_TIME = 150;        // 2.5 segundos travada e visível em 3D para leitura
-    const CYCLE_DURATION = DECAY_TIME + ATTRACT_TIME + HOLD_TIME; // 360 frames (6 segundos total)
+    // Tempos ajustados incluindo a nova fase de explosão (decay) no final do ciclo
+    const ATTRACT_TIME = 240;     // Puxa as partículas devagar (suspense)
+    const HOLD_TIME = 200;        // Tempo estável para leitura da palavra
+    const TENSION_TIME = 260;     // Deformação progressiva no formato quadrado e rotação multieixo
+    const DECAY_TIME = 120;       // EXPLOSÃO total estilo Big Bang antes de reiniciar o loop
+    const CYCLE_DURATION = ATTRACT_TIME + HOLD_TIME + TENSION_TIME + DECAY_TIME; 
 
     class RotatingParticle3D {
       constructor(targetX, targetY, canvasWidth, canvasHeight) {
@@ -190,63 +177,82 @@ export default function Hero() {
         this.vy = (Math.random() - 0.5) * 4;
         this.vz = (Math.random() - 0.5) * 4;
 
-        this.ease = Math.random() * 0.04 + 0.02; // Aceleração de atração ligeiramente maior para montar rápido
-        this.friction = 0.85; // Menor fricção para evitar oscilações excessivas ao travar
+        this.ease = Math.random() * 0.012 + 0.006; 
+        this.friction = 0.88; 
       }
 
-      update(state, clickBurst, currentAngleY) {
-        // Estado 1: Montando ou Mantendo travado para leitura
-        if (state === 'assemble' || state === 'hold') {
-          const cosY = Math.cos(currentAngleY);
-          const sinY = Math.sin(currentAngleY);
+      update(state, clickBurst, angleX, angleY, tensionProgress) {
+        const cosY = Math.cos(angleY);
+        const sinY = Math.sin(angleY);
+        const cosX = Math.cos(angleX);
+        const sinX = Math.sin(angleX);
 
-          // Rotaciona os alvos no espaço 3D globalmente
-          const rotatedTargetX = this.targetX * cosY - this.targetZ * sinY;
-          const rotatedTargetZ = this.targetX * sinY + this.targetZ * cosY;
+        let finalTargetX = this.targetX;
+        let finalTargetY = this.targetY;
+        let finalTargetZ = this.targetZ;
 
-          const dx = rotatedTargetX - this.x;
-          const dy = this.targetY - this.y;
-          const dz = rotatedTargetZ - this.z;
+        // 1. Estado Tension: Transição e deformação progressiva para o quadrado tridimensional
+        if (state === 'tension') {
+          const squareSize = 140; 
+          const squareX = Math.sign(this.targetX) * (Math.abs(this.targetX) % squareSize) - (squareSize / 2);
+          const squareY = Math.sign(this.targetY) * (Math.abs(this.targetY) % squareSize) - (squareSize / 2);
+          const squareZ = (Math.sin(this.targetX * 0.05) * 60);
 
-          // Se estiver na fase de "hold" (segurar), aumenta a força para as partículas não tremerem
-          const multi = state === 'hold' ? 0.35 : 0.22;
+          // Interpola linearmente entre a palavra e o quadrado usando o progresso do tempo
+          finalTargetX = this.targetX + (squareX - this.targetX) * tensionProgress;
+          finalTargetY = this.targetY + (squareY - this.targetY) * tensionProgress;
+          finalTargetZ = this.targetZ + (squareZ - this.targetZ) * tensionProgress;
+        }
 
-          this.vx += dx * this.ease * multi;
-          this.vy += dy * this.ease * multi;
-          this.vz += dz * this.ease * multi;
+        // Aplicação das rotações globais nos eixos X e Y
+        let rX = finalTargetX * cosY - finalTargetZ * sinY;
+        let rZ = finalTargetX * sinY + finalTargetZ * cosY;
+        let rY = finalTargetY * cosX - rZ * sinX;
+        rZ = finalTargetY * sinX + rZ * cosX;
+
+        // Comportamento físico baseado nos estados
+        if (state === 'decay') {
+          // 2. Estado Decay: Explosão física agressiva idêntica ao carregamento da página
+          this.vx += (Math.random() - 0.5) * 4.5 - (rX * 0.005);
+          this.vy += (Math.random() - 0.5) * 4.5 - (rY * 0.005);
+          this.vz += (Math.random() - 0.5) * 4.5 - (rZ * 0.005);
+
+          this.vx *= 0.95;
+          this.vy *= 0.95;
+          this.vz *= 0.95;
+        } else {
+          // Atração normal para os alvos (seja montando a palavra ou o quadrado progressivo)
+          const dx = rX - this.x;
+          const dy = rY - this.y;
+          const dz = rZ - this.z;
+
+          const currentEase = state === 'assemble' ? this.ease * 0.8 : this.ease;
+          const multi = state === 'hold' ? 0.35 : 0.2;
+
+          this.vx += dx * currentEase * multi;
+          this.vy += dy * currentEase * multi;
+          this.vz += dz * currentEase * multi;
 
           this.vx *= this.friction;
           this.vy *= this.friction;
           this.vz *= this.friction;
-        } 
-        // Estado 2: Dispersando/Desintegrando
-        else {
-          this.vx += (Math.random() - 0.5) * 0.4 - (this.z * 0.0015); 
-          this.vy += (Math.random() - 0.5) * 0.4;
-          this.vz += (Math.random() - 0.5) * 0.4 + (this.x * 0.0015);
-
-          this.vx *= 0.96;
-          this.vy *= 0.96;
-          this.vz *= 0.96;
         }
 
+        // Clique do mouse provoca estouro extra manual e instantâneo
         if (clickBurst) {
           const angle = Math.random() * Math.PI * 2;
-          const force = Math.random() * 22 + 8;
+          const force = Math.random() * 26 + 12;
           this.vx = Math.cos(angle) * force;
           this.vy = Math.sin(angle) * force;
-          this.vz = (Math.random() - 0.5) * 20;
+          this.vz = (Math.random() - 0.5) * 30;
         }
 
         this.x += this.vx;
         this.y += this.vy;
         this.z += this.vz;
-
-        if (this.z < -600) this.z = 600;
-        if (this.z > 600) this.z = -600;
       }
 
-      draw(context, isPinkPalette, width, height) {
+      draw(context, isCustomPalette, width, height) {
         const fov = 400; 
         const scale = fov / (fov + this.z);
 
@@ -256,13 +262,13 @@ export default function Hero() {
 
         if (projectedSize <= 0) return;
 
-        const alpha = Math.min(Math.max(scale * 0.75, 0.1), 1);
+        const alpha = Math.min(Math.max(scale * 0.75, 0.15), 1);
 
         let color;
-        if (isPinkPalette) {
-          color = this.targetX % 3 === 0 
-            ? `rgba(255, 0, 127, ${alpha})` 
-            : `rgba(255, 94, 98, ${alpha})`; 
+        if (isCustomPalette) {
+          color = this.targetX % 2 === 0 
+            ? `rgba(38, 170, 255, ${alpha})` 
+            : `rgba(105, 41, 255, ${alpha})`; 
         } else {
           color = this.targetX % 3 === 0 
             ? `rgba(0, 242, 254, ${alpha})` 
@@ -286,24 +292,35 @@ export default function Hero() {
       cycleTimer++;
       if (cycleTimer >= CYCLE_DURATION) {
         cycleTimer = 0;
+        isFirstLoad = false; 
       }
 
-      // Máquina de estados baseada nos timers definidos
-      let currentState = 'decay';
-      if (cycleTimer >= DECAY_TIME && cycleTimer < DECAY_TIME + ATTRACT_TIME) {
-        currentState = 'assemble'; // Voando para formar a palavra
-      } else if (cycleTimer >= DECAY_TIME + ATTRACT_TIME) {
-        currentState = 'hold'; // Palavra montada e perfeitamente legível
+      let currentState = 'assemble';
+      let tensionProgress = 0;
+
+      if (cycleTimer >= ATTRACT_TIME && cycleTimer < ATTRACT_TIME + HOLD_TIME) {
+        currentState = 'hold'; 
+      } else if (cycleTimer >= ATTRACT_TIME + HOLD_TIME && cycleTimer < ATTRACT_TIME + HOLD_TIME + TENSION_TIME) {
+        currentState = 'tension';
+        // Calcula o fator progressivo de 0 a 1 dentro do estágio de tensão
+        tensionProgress = (cycleTimer - (ATTRACT_TIME + HOLD_TIME)) / TENSION_TIME;
+      } else if (cycleTimer >= ATTRACT_TIME + HOLD_TIME + TENSION_TIME) {
+        currentState = 'decay'; // Momento do estouro/explosão massiva
       }
 
-      // Rotação contínua e suave de 360° no eixo Y
-      globalAngleY += 0.009; 
-      if (globalAngleY > Math.PI * 2) {
-        globalAngleY = 0;
+      // Rotações dinâmicas de eixo baseadas na fase atual
+      if (currentState === 'tension' || currentState === 'decay') {
+        globalAngleY = Math.sin(Date.now() * 0.0025) * 0.6;
+        globalAngleX = Math.cos(Date.now() * 0.002) * 0.4;
+      } else {
+        globalAngleY = Math.sin(Date.now() * 0.001) * 0.35;
+        globalAngleX = 0;
       }
 
       particles.forEach(p => {
-        p.update(currentState, triggerBurst, globalAngleY);
+        // Se for o load inicial absoluto da página nos primeiros frames, força o estado solto
+        const computedState = (isFirstLoad && cycleTimer < 45) ? 'decay' : currentState;
+        p.update(computedState, triggerBurst, globalAngleX, globalAngleY, tensionProgress);
         p.draw(ctx, isClickedRef.current, canvas.width, canvas.height);
       });
 
@@ -334,7 +351,6 @@ export default function Hero() {
         <CanvasStyled ref={canvasRef} />
       </CanvasContainer>
 
-      
       <SocialProofContainer
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -357,7 +373,6 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
       >
-        
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
