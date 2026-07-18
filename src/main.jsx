@@ -6,6 +6,7 @@ import { GlobalStyles } from './styles/GlobalStyles'
 import Partners from './components/Partners'
 import Courses from './components/Courses'
 import AISection from './components/IaTraining'
+import IaAgents from './components/IaSpecialist'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -15,5 +16,6 @@ createRoot(document.getElementById('root')).render(
     <Partners />
     <Courses />
     <AISection />
+    <IaAgents />
   </StrictMode>,
 )
