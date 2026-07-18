@@ -21,7 +21,6 @@ const SectionContainer = styled.section`
   justify-content: center;
   overflow: hidden;
   position: relative;
-  font-family: 'Orbitron', sans-serif;
 
   &::before {
     content: '';

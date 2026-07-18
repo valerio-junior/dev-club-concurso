@@ -13,7 +13,6 @@ const Container = styled.section`
   align-items: center;
   position: relative;
   overflow: hidden;
-  font-family: 'Orbitron', sans-serif;
   color: #ffffff;
 `;
 

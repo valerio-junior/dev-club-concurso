@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Video, LifeBuoy, Briefcase } from 'lucide-react';
+import { Users, Video, LifeBuoy, Briefcase, Code, Brain, ArrowUpRight } from 'lucide-react';
 
-// Importação das imagens enviadas
-import imgComunidade from '../assets/comunidade.png';
+// Importação das imagens restantes
 import imgMentorias from '../assets/mentorias.png';
 import imgSuporte from '../assets/suporte.png';
 import imgVagas from '../assets/vagas.png';
 
 const SectionContainer = styled.section`
-  height: 100vh; /* Força a seção a ter exatamente o tamanho da tela */
+  height: 100vh;
   width: 100%;
   background-color: #030308;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem; /* Reduzido para dar mais respiro interno */
+  padding: 2rem;
   position: relative;
-  overflow: hidden; /* Evita qualquer scroll indesejado */
+  overflow: hidden;
 `;
 
 const ContainerWrapper = styled.div`
@@ -28,7 +27,7 @@ const ContainerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2rem; /* Reduzido o espaço entre o header e o conteúdo */
+  gap: 2rem;
 `;
 
 const HeaderCenter = styled.div`
@@ -55,7 +54,7 @@ const SectionBadge = styled.div`
 
 const Title = styled.h2`
   font-family: 'Orbitron', sans-serif;
-  font-size: 2.2rem; /* Reduzido de 2.6rem para economizar espaço vertical */
+  font-size: 2.2rem;
   font-weight: 900;
   color: #ffffff;
   line-height: 1.1;
@@ -70,7 +69,7 @@ const Title = styled.h2`
 const Subtitle = styled.p`
   font-family: 'Inter', sans-serif;
   color: #8b949e;
-  font-size: 1rem; /* Reduzido de 1.1rem */
+  font-size: 1rem;
 `;
 
 const MainGrid = styled.div`
@@ -78,7 +77,7 @@ const MainGrid = styled.div`
   grid-template-columns: 1fr;
   gap: 2.5rem;
   align-items: center;
-  height: 65vh; /* Define uma altura máxima segura para a área de conteúdo */
+  height: 65vh;
 
   @media (min-width: 968px) {
     grid-template-columns: 0.9fr 1.1fr;
@@ -88,16 +87,16 @@ const MainGrid = styled.div`
 const TabsList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem; /* Mais compacto para os botões ficarem juntos */
+  gap: 0.75rem;
 `;
 
 const TabButton = styled.button`
   background: ${props => props.$active ? 'rgba(255, 255, 255, 0.03)' : 'transparent'};
   border: 1px solid ${props => props.$active ? 'rgba(0, 242, 254, 0.2)' : 'rgba(255, 255, 255, 0.02)'};
-  padding: 1rem 1.2rem; /* Reduzido o padding interno dos botões */
+  padding: 1rem 1.2rem;
   border-radius: 14px;
   display: flex;
-  align-items: center; /* Mudado para center para ficar alinhado mesmo quando compacto */
+  align-items: center;
   gap: 1rem;
   cursor: pointer;
   text-align: left;
@@ -117,7 +116,7 @@ const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* Impede o ícone de amassar em telas menores */
+  flex-shrink: 0;
 `;
 
 const TabTextContent = styled.div`
@@ -129,13 +128,13 @@ const TabTextContent = styled.div`
 
 const TabTitle = styled.h3`
   color: ${props => props.$active ? '#ffffff' : '#c9d1d9'};
-  font-size: 1.05rem; /* Ajustado sutilmente */
+  font-size: 1.05rem;
   font-weight: 700;
 `;
 
 const TabDesc = styled.p`
   color: #8b949e;
-  font-size: 0.85rem; /* Texto de apoio ligeiramente menor */
+  font-size: 0.85rem;
   line-height: 1.4;
   display: ${props => props.$active ? 'block' : 'none'};
   max-width: 400px;
@@ -147,11 +146,11 @@ const DisplaySide = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%; /* Ocupa o limite máximo da Grid sem estourar */
+  height: 100%;
   position: relative;
 `;
 
-const ImageContainer = styled(motion.div)`
+const ContentContainer = styled(motion.div)`
   width: 100%;
   height: 100%;
   display: flex;
@@ -162,10 +161,99 @@ const ImageContainer = styled(motion.div)`
 const PreviewImage = styled.img`
   width: 100%;
   height: 100%;
-  max-height: 380px; /* Limitador crucial para impedir o scroll da tela inteira */
-  object-fit: contain; /* Garante que imagens verticais ou horizontais fiquem perfeitas dentro do box */
+  max-height: 380px;
+  object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+`;
+
+/* --- CARD EXCLUSIVO DE COMUNIDADE VIA CÓDIGO --- */
+const NativeCommunityCard = styled.div`
+  width: 100%;
+  max-width: 460px;
+  background: linear-gradient(135deg, rgba(20, 20, 35, 0.6) 0%, rgba(10, 10, 20, 0.8) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  font-family: 'Inter', sans-serif;
+`;
+
+const TopIconsRow = styled.div`
+  display: flex;
+  gap: 0.8rem;
+`;
+
+const MiniBadgeIcon = styled.div`
+  padding: 0.6rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props => props.$blue ? 'rgba(0, 102, 255, 0.15)' : 'rgba(0, 242, 254, 0.08)'};
+  border: 1px solid ${props => props.$blue ? 'rgba(0, 102, 255, 0.3)' : 'rgba(0, 242, 254, 0.15)'};
+  color: ${props => props.$blue ? '#3b82f6' : '#00f2fe'};
+`;
+
+const CardHeadingBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+`;
+
+const CardMainTitle = styled.h4`
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+`;
+
+const CardSubtitle = styled.span`
+  font-size: 0.95rem;
+  color: #3b82f6;
+  font-weight: 600;
+`;
+
+const CardParagraph = styled.p`
+  color: #9ca3af;
+  font-size: 0.95rem;
+  line-height: 1.6;
+`;
+
+const BadgesGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+`;
+
+const TechBadge = styled.span`
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #9ca3af;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+`;
+
+const CommunityLink = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #3b82f6;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  width: fit-content;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #60a5fa;
+  }
 `;
 
 const ECOSYSTEM_DATA = [
@@ -174,7 +262,7 @@ const ECOSYSTEM_DATA = [
     title: 'Comunidade Exclusiva',
     desc: 'Conecte-se com milhares de devs e entusiastas de IA no DevClub + IaClub. O ambiente perfeito para fazer networking, debater códigos e estruturar projetos.',
     icon: Users,
-    image: imgComunidade
+    isNative: true // Flag para identificar que roda em código puro
   },
   {
     id: 'mentorias',
@@ -201,6 +289,7 @@ const ECOSYSTEM_DATA = [
 
 export default function MentoringSection() {
   const [activeTab, setActiveTab] = useState(0);
+  const currentTab = ECOSYSTEM_DATA[activeTab];
 
   return (
     <SectionContainer>
@@ -236,21 +325,56 @@ export default function MentoringSection() {
             })}
           </TabsList>
 
-          {/* Lado Direito - Preview Visual Encaixado */}
+          {/* Lado Direito - Preview Condicional (Código vs Imagem) */}
           <DisplaySide>
             <AnimatePresence mode="wait">
-              <ImageContainer
+              <ContentContainer
                 key={activeTab}
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.97 }}
                 transition={{ duration: 0.3 }}
               >
-                <PreviewImage 
-                  src={ECOSYSTEM_DATA[activeTab].image} 
-                  alt={ECOSYSTEM_DATA[activeTab].title} 
-                />
-              </ImageContainer>
+                {currentTab.isNative ? (
+                  /* Renderização Nativa da Comunidade */
+                  <NativeCommunityCard>
+                    <TopIconsRow>
+                      <MiniBadgeIcon $blue>
+                        <Code size={18} />
+                      </MiniBadgeIcon>
+                      <MiniBadgeIcon>
+                        <Brain size={18} />
+                      </MiniBadgeIcon>
+                    </TopIconsRow>
+                    
+                    <CardHeadingBlock>
+                      <CardMainTitle>Programação & IA</CardMainTitle>
+                      <CardSubtitle>DevClub + IaClub</CardSubtitle>
+                    </CardHeadingBlock>
+
+                    <CardParagraph>
+                      Comunidade para desenvolvedores e entusiastas de Inteligência Artificial. Discussões sobre código, projetos, carreira e as últimas novidades em IA.
+                    </CardParagraph>
+
+                    <BadgesGrid>
+                      <TechBadge>Fórum de discussão</TechBadge>
+                      <TechBadge>Networking</TechBadge>
+                      <TechBadge>Projetos em grupo</TechBadge>
+                      <TechBadge>Dúvidas técnicas</TechBadge>
+                    </BadgesGrid>
+
+                    <CommunityLink href="https://aulas.devclub.com.br/comunidade" target='blank'>
+                      Acessar Comunidade <ArrowUpRight size={16} />
+                    </CommunityLink>
+                  </NativeCommunityCard>
+                ) : (
+                  /* Renderização Padrão das Imagens */
+                  <PreviewImage 
+                    src={currentTab.image} 
+                    alt={currentTab.title} 
+                  />
+                )}
+              </ContentContainer>
             </AnimatePresence>
           </DisplaySide>
 

@@ -23,7 +23,6 @@ const SectionContainer = styled.section`
   padding: 4rem 2rem;
   position: relative;
   overflow: hidden;
-  font-family: 'Orbitron', sans-serif;
 
   /* Detalhe de luz de fundo para dar a atmosfera de Inteligência Artificial */
   &::before {
@@ -57,7 +56,6 @@ const TextSide = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  font-family: 'Inter', sans-serif; /* Mantendo fontes limpas para leitura */
 `;
 
 const Badge = styled.div`
@@ -70,14 +68,12 @@ const Badge = styled.div`
   border-radius: 50px;
   width: fit-content;
   color: #00f2fe;
-  font-family: 'Orbitron', sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 1px;
 `;
 
 const MainTitle = styled.h2`
-  font-family: 'Orbitron', sans-serif;
   font-size: 2.5rem;
   font-weight: 900;
   line-height: 1.2;

@@ -19,7 +19,6 @@ const SectionContainer = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: "Roboto", sans-serif;
   color: #ffffff;
   overflow: hidden;
 

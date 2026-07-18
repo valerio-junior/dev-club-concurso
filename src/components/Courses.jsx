@@ -23,7 +23,6 @@ const StickyContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   overflow: hidden;
-  font-family: 'Roboto', sans-serif;
   color: #ffffff;
 
   @media (max-width: 1024px) {
@@ -254,7 +253,7 @@ export default function Courses() {
         <motion.div style={{ opacity: headerOpacity }}>
           <HeaderContainer>
             <HeaderLeft>
-              Formações e Trilhas para você <span>não se perder no caminho</span> e traçar uma linha direta.
+              Formações e Trilhas para você não se perder no caminho e traçar uma linha direta.
             </HeaderLeft>
             <HeaderRight>
               Didáticas que fazem você vir do completo zero ao nível avançado pronto para o mercado de trabalho.
