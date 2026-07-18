@@ -7,6 +7,7 @@ import Partners from './components/Partners'
 import Courses from './components/Courses'
 import AISection from './components/IaTraining'
 import IaAgents from './components/IaSpecialist'
+import MentoringSection from './components/mentoring'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -17,5 +18,6 @@ createRoot(document.getElementById('root')).render(
     <Courses />
     <AISection />
     <IaAgents />
+    <MentoringSection />
   </StrictMode>,
 )

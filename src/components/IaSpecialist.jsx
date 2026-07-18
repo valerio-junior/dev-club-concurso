@@ -225,21 +225,22 @@ export default function IaAgents() {
         </TextSide>
 
         {/* Lado Direito: Carrossel Inteligente com AnimatePresence */}
-        <ImageSide>
-          <CardFrame>
-            <AnimatePresence mode="wait">
-              <StyledImage
-                key={currentIndex}
-                src={AI_AGENTS[currentIndex]}
-                alt="Agente de IA DevClub"
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.02 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              />
-            </AnimatePresence>
-          </CardFrame>
-        </ImageSide>
+        {/* Lado Direito: Carrossel Inteligente com Crossfade Direto */}
+<ImageSide>
+  <CardFrame>
+    <AnimatePresence initial={false}>
+      <StyledImage
+        key={currentIndex}
+        src={AI_AGENTS[currentIndex]}
+        alt="Agente de IA DevClub"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4, ease: "linear" }} 
+      />
+    </AnimatePresence>
+  </CardFrame>
+</ImageSide>
 
       </ContentWrapper>
     </SectionContainer>
