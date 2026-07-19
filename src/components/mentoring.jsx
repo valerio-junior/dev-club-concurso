@@ -46,14 +46,12 @@ const SectionBadge = styled.div`
   padding: 0.4rem 1rem;
   border-radius: 50px;
   color: #a855f7;
-  font-family: 'Orbitron', sans-serif;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 1.5px;
 `;
 
 const Title = styled.h2`
-  font-family: 'Orbitron', sans-serif;
   font-size: 2.2rem;
   font-weight: 900;
   color: #ffffff;
@@ -67,7 +65,6 @@ const Title = styled.h2`
 `;
 
 const Subtitle = styled.p`
-  font-family: 'Inter', sans-serif;
   color: #8b949e;
   font-size: 1rem;
 `;
@@ -123,7 +120,6 @@ const TabTextContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  font-family: 'Inter', sans-serif;
 `;
 
 const TabTitle = styled.h3`
@@ -179,7 +175,6 @@ const NativeCommunityCard = styled.div`
   flex-direction: column;
   gap: 1.5rem;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  font-family: 'Inter', sans-serif;
 `;
 
 const TopIconsRow = styled.div`

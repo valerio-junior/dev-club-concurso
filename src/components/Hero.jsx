@@ -344,6 +344,13 @@ export default function Hero() {
     };
   }, []);
 
+  const scrollToPartners = () => {
+    const section = document.getElementById('partners-section');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <Container>
       <CanvasContainer>
@@ -368,6 +375,7 @@ export default function Hero() {
       </SocialProofContainer>
 
       <ScrollIndicator
+        onClick={scrollToPartners}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
@@ -376,7 +384,9 @@ export default function Hero() {
           animate={{ y: [0, 6, 0] }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
         >
-          <ChevronDown size={20} />
+          <ChevronDown size={20} 
+            
+          />
         </motion.div>
       </ScrollIndicator>
     </Container>

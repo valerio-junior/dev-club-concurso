@@ -135,7 +135,7 @@ const LogoWrapper = styled.div`
 
 export default function Partners() {
   return (
-    <SectionContainer>
+    <SectionContainer id="partners-section">
       <Title
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}

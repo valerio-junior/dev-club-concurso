@@ -18,7 +18,6 @@ const NavContainer = styled(motion.nav)`
   align-items: center;
   padding: 0 4rem;
   z-index: 1000;
-  font-family: 'Roboto', sans-serif;
 
   @media (max-width: 1024px) {
     padding: 0 2rem;
@@ -46,7 +45,6 @@ const LogoIcon = styled.div`
 
   &::before {
     content: '</>';
-    font-family: 'Orbitron', sans-serif;
     font-weight: 900;
     font-size: 0.9rem;
     color: #030308;
@@ -174,7 +172,6 @@ const PrimaryButton = styled(motion.button)`
   border: none;
   border-radius: 30px;
   color: #030308;
-  font-family: 'Orbitron', sans-serif;
   font-weight: 900;
   font-size: 0.75rem;
   letter-spacing: 2px;
