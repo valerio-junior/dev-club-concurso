@@ -2,13 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-
-import introducaoIaImg from "../assets/introducao-ia.png";
-import formacaoPromptImg from "../assets/formacao-em-prompt.png";
-import introducaoN8nImg from "../assets/introducao-n8n.png";
-import automacoesN8nImg from "../assets/automacoes-n8n.png";
-import agentesIaImg from "../assets/agentes-de-ia.png";
-import agentesIaAvancadoImg from "../assets/agentes-de-ia-avancado.png";
+import introducaoIaImg from "../assets/introducao-ia.jpg";
+import formacaoPromptImg from "../assets/formacao-em-prompt.jpg";
+import introducaoN8nImg from "../assets/introducao-n8n.jpg";
+import automacoesN8nImg from "../assets/automacoes-n8n.jpg";
+import agentesIaImg from "../assets/agentes-de-ia.jpg";
+import agentesIaAvancadoImg from "../assets/agentes-de-ia-avancado.jpg";
 
 const SectionContainer = styled.section`
   width: 100%;
@@ -33,7 +32,6 @@ const TextContent = styled.div`
   margin-bottom: 4rem;
 `;
 
-// Título configurado para comportar as letras lado a lado sem quebrar
 const AnimatedTitle = styled(motion.h3)`
   font-size: 2.2rem;
   font-weight: 900;
@@ -45,7 +43,6 @@ const AnimatedTitle = styled(motion.h3)`
   color: #ffffff;
 `;
 
-// Estilização individual para cada letra/palavra animada
 const Letter = styled(motion.span)`
   display: inline-block;
   background: ${(props) =>
@@ -54,7 +51,7 @@ const Letter = styled(motion.span)`
       : "linear-gradient(135deg, #ffffff 0%, #8b9bb4 100%)"};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  white-space: pre; /* Preserva os espaços em branco entre as palavras */
+  white-space: pre;
 `;
 
 const DescriptionText = styled(motion.p)`
@@ -93,12 +90,13 @@ const ImageCard = styled(motion.div)`
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.01);
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+  background: #06060c;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
   width: 170px;
   flex-shrink: 0;
   height: auto;
   display: flex;
+  aspect-ratio: 9 / 16; /* Garante que os containers tenham a proporção perfeita das imagens */
 
   &::before {
     content: "";
@@ -108,7 +106,7 @@ const ImageCard = styled(motion.div)`
     padding: 1.5px;
     background: linear-gradient(
       135deg,
-      rgba(0, 242, 254, 0.25) 0%,
+      rgba(0, 242, 254, 0.35) 0%,
       rgba(255, 255, 255, 0.03) 100%
     );
     -webkit-mask:
@@ -118,50 +116,127 @@ const ImageCard = styled(motion.div)`
     mask-composite: exclude;
     pointer-events: none;
     transition: background 0.4s ease;
-    z-index: 2;
+    z-index: 4; /* Atualizado para ficar acima dos novos textos */
   }
 
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     display: block;
     transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    filter: brightness(1.2) saturate(1.35) contrast(1.05);
   }
 
   .overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(3, 3, 8, 0.3) 0%, transparent 60%);
+    /* Ajustado o gradiente para criar uma sombra no topo e no fundo, garantindo a leitura perfeita das letras */
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.65) 0%,
+      transparent 25%,
+      transparent 55%,
+      rgba(3, 3, 8, 0.9) 100%
+    );
     transition: background 0.4s ease;
-    z-index: 1;
+    z-index: 2;
   }
 
   &:hover {
     &::before {
-      background: linear-gradient(135deg, #00f2fe 0%, #7f00ff 100%);
+      background: linear-gradient(135deg, #00f2fe 0%, #eb1e54 100%);
     }
 
     img {
       transform: scale(1.04);
+      filter: brightness(1.25) saturate(1.45) contrast(1.1);
     }
 
     .overlay {
       background: linear-gradient(
-        to top,
-        rgba(3, 3, 8, 0.1) 0%,
-        transparent 100%
+        to bottom,
+        rgba(0, 0, 0, 0.7) 0%,
+        transparent 20%,
+        transparent 50%,
+        rgba(3, 3, 8, 0.95) 100%
       );
     }
   }
 `;
 
-// Variantes da animação de máquina de escrever
+/* ================= NOVOS STYLED COMPONENTS PARA OS TEXTOS PEDIDOS ================= */
+
+const CardBrandTop = styled.span`
+  position: absolute;
+  top: 7%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  z-index: 3;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+`;
+
+const CardBottomWrapper = styled.div`
+  position: absolute;
+  bottom: 7%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+  text-align: center;
+  z-index: 3;
+  pointer-events: none;
+`;
+
+const BadgeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+`;
+
+const BadgeIA = styled.span`
+  color: #00e5ff; /* Azul/ciano característico da marca */
+  font-weight: 900;
+`;
+
+const BadgeClub = styled.span`
+  color: #ffffff;
+  font-weight: 500;
+`;
+
+const CardTitle = styled.h4`
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+`;
+
+const HighlightRed = styled.span`
+  color: #eb1e54; /* Vermelho característico do N8N */
+  font-weight: 700;
+`;
+
+/* ================================================================================= */
+
 const titleContainerVariants = {
   hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
-      // Aumentado para 0.09s para o usuário ver nitidamente cada letra surgindo
       staggerChildren: 0.09,
     },
   },
@@ -204,7 +279,21 @@ export default function AISection() {
     { src: agentesIaAvancadoImg, alt: "Agentes de IA avançados com N8N" },
   ];
 
-  // Separando o texto em caracteres para animar um por um
+  // Função para tratar o texto e pintar dinamicamente o N8N de vermelho
+  const formatCardTitle = (title) => {
+    if (title.includes("N8N")) {
+      const parts = title.split("N8N");
+      return (
+        <>
+          {parts[0]}
+          <HighlightRed>N8N</HighlightRed>
+          {parts[1]}
+        </>
+      );
+    }
+    return title;
+  };
+
   const part1 = "Ecossistema ".split("");
   const part2 = "IA CLUB".split("");
 
@@ -259,6 +348,17 @@ export default function AISection() {
           >
             <img src={card.src} alt={card.alt} loading="lazy" />
             <div className="overlay" />
+            
+            {/* INCLUSÃO CIRÚRGICA DOS TEXTOS INTERNOS SOLICITADOS */}
+            <CardBrandTop>DevClub</CardBrandTop>
+            
+            <CardBottomWrapper>
+              <BadgeContainer>
+                <BadgeIA>IA</BadgeIA>
+                <BadgeClub>CLUB</BadgeClub>
+              </BadgeContainer>
+              <CardTitle>{formatCardTitle(card.alt)}</CardTitle>
+            </CardBottomWrapper>
           </ImageCard>
         ))}
       </HorizontalRow>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Sparkles, Code2, Briefcase } from 'lucide-react';
+import { Bot, Code2, Briefcase } from 'lucide-react';
 
 // Substitua os caminhos abaixo pelos caminhos reais das pastas do seu projeto
 import imgHtml from '../assets/especialista-html.png';
@@ -9,9 +9,9 @@ import imgCss from '../assets/especialista-css.png';
 import imgJs from '../assets/especialista-js.png';
 import imgReact from '../assets/especialista-react.png';
 import imgNode from '../assets/especialista-node.png';
-import imgCarreira from '../assets/especialista-carreira-dev.png';
-import imgLinkedin from '../assets/especialista-linkedin.png';
-import imgCurriculo from '../assets/especialista-curriculo.png';
+import imgCarreira from '../assets/especialista-carreira-dev.jpg';
+import imgLinkedin from '../assets/especialista-linkedin.jpg';
+import imgCurriculo from '../assets/especialista-curriculo.jpg';
 
 const SectionContainer = styled.section`
   min-height: 90vh;
@@ -142,6 +142,7 @@ const CardFrame = styled.div`
   height: 450px;
   border-radius: 16px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 242, 254, 0.05);
+  overflow: hidden;
 
   /* Moldura decorativa externa simulando tecnologia de IA */
   &::before {
@@ -158,36 +159,127 @@ const CardFrame = styled.div`
 const StyledImage = styled(motion.img)`
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   position: absolute;
   top: 0;
   left: 0;
   border-radius: 16px;
+  z-index: 1;
 `;
 
-// Lista ordenada das imagens mapeadas para rodar no loop de segundos
+/* --- ELEMENTOS ESTILIZADOS PARA O TEXTO INTERNO DO CARD --- */
+
+const CardContentOverlay = styled(motion.div)`
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  pointer-events: none;
+`;
+
+const CardTextGroup = styled.div`
+  margin-top: 10.5rem; /* Ajustado de 7.5rem para 10.5rem para mover o título e a descrição mais para baixo */
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+`;
+
+const CardTitle = styled.h3`
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 800;
+  text-align: left;
+`;
+
+const CardDescription = styled.p`
+  color: #dae1e7;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  text-align: left;
+`;
+
+const CardTag = styled.span`
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  background: rgba(0, 200, 83, 0.1);
+  border: 1px solid rgba(0, 200, 83, 0.3);
+  color: #00c853;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+`;
+
+// Mapeamento completo dos dados dinâmicos de cada Agente de IA
 const AI_AGENTS = [
-  imgHtml,
-  imgCss,
-  imgJs,
-  imgReact,
-  imgNode,
-  imgCarreira,
-  imgLinkedin,
-  imgCurriculo
+  {
+    image: imgHtml,
+    title: "Especialista em HTML",
+    description: "Especialista em HTML5. Ajudo a construir a base da web corretamente, fogando em tags semânticas, organização do DOM e acessibilidade .",
+    category: "programação"
+  },
+  {
+    image: imgCss,
+    title: "Especialista em CSS",
+    description: "Especialista de CSS e estilização do DevClub. Ensino alunos a dominar o Flexbox, grid, responsividade (Mobile First) e criar layouts modernos.",
+    category: "programação"
+  },
+  {
+    image: imgJs,
+    title: "Especialista em JavaScript",
+    description: "Mentor de lógica e JavaScript do DevClub. Ajudo os alunos a dominar o ES6+, manipulação do DOM, funções e a criar base sólida necessária para o React",
+    category: "programação"
+  },
+  {
+    image: imgReact,
+    title: "Especialista em React",
+    description: "Especialista em ensino de React. Tire dúvidas sobre useState, useEffect e aprenda boas práticas de arquitetura e correção de erros.",
+    category: "programação"
+  },
+  {
+    image: imgNode,
+    title: "Especialista em Node.js",
+    description: "Mentor de Backend e Node.js do DevClub. Ensino os alunos a criar APIs RESTful, servidores com Express, conectar bancos de dados e arquitetar aplicações escaláveis",
+    category: "programação"
+  },
+  {
+    image: imgCarreira,
+    title: "Especialista em Carreira Dev",
+    description: "Sou um agente especializado em estratégia de carreira Tech. Atuo como um mentor sênior que planeja seus próximos passos profissionais, do Júnior ao C-Level.",
+    category: "carreira"
+  },
+  {
+    image: imgLinkedin,
+    title: "Especialista em LinkedIn",
+    description: "Sou um agente especializado em estratégia de Linkedin. Atuo como um consultor de marca pessoal que audita o seu perfil e sugere otimizações práticas para aumentar a sua visibilidade e atrair as oportunidades certas",
+    category: "carreira"
+  },
+  {
+    image: imgCurriculo,
+    title: "Especialista em Currículo",
+    description: "Sou um agente especializado em análise e otimização de curriculos. Atuo como um recrutador técnico que identifica pontos de melhoria na estrutura, conteúdo e palavras chave para aumentar suas chances de aprovação em processos seletivos ",
+    category: "carreira"
+  }
 ];
 
 export default function IaAgents() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    // Configura a troca automática a cada 3.5 segundos (tempo ideal para leitura parcial do card)
+    // Configura a troca automática a cada 3.5 segundos
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % AI_AGENTS.length);
     }, 3500);
 
     return () => clearInterval(interval);
   }, []);
+
+  const currentAgent = AI_AGENTS[currentIndex];
 
   return (
     <SectionContainer>
@@ -220,23 +312,39 @@ export default function IaAgents() {
           </FeaturesGrid>
         </TextSide>
 
-        {/* Lado Direito: Carrossel Inteligente com AnimatePresence */}
-        {/* Lado Direito: Carrossel Inteligente com Crossfade Direto */}
-<ImageSide>
-  <CardFrame>
-    <AnimatePresence initial={false}>
-      <StyledImage
-        key={currentIndex}
-        src={AI_AGENTS[currentIndex]}
-        alt="Agente de IA DevClub"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.4, ease: "linear" }} 
-      />
-    </AnimatePresence>
-  </CardFrame>
-</ImageSide>
+        {/* Lado Direito: Carrossel Inteligente com Overlays de Texto */}
+        <ImageSide>
+          <CardFrame>
+            <AnimatePresence initial={false}>
+              {/* Imagem de Fundo (Preta com a Logo no Topo) */}
+              <StyledImage
+                key={`img-${currentIndex}`}
+                src={currentAgent.image}
+                alt={currentAgent.title}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "linear" }} 
+              />
+              
+              {/* Textos sobrepostos dinamicamente em sincronia com o crossfade */}
+              <CardContentOverlay
+                key={`text-${currentIndex}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "linear" }}
+              >
+                <CardTextGroup>
+                  <CardTitle>{currentAgent.title}</CardTitle>
+                  <CardDescription>{currentAgent.description}</CardDescription>
+                </CardTextGroup>
+                
+                <CardTag>{currentAgent.category}</CardTag>
+              </CardContentOverlay>
+            </AnimatePresence>
+          </CardFrame>
+        </ImageSide>
 
       </ContentWrapper>
     </SectionContainer>
