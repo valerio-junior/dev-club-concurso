@@ -137,7 +137,7 @@ const CardTitle = styled.h4`
 `;
 
 const CardDescription = styled.p`
-  font-size: 0.75rem; 
+  font-size: 1rem; 
   color: #8b9bb4;
   line-height: 1.4;
   margin: 0;
