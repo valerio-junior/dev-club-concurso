@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 import platformImg from "../assets/plataforma-ensino.png";
 
@@ -107,23 +107,30 @@ export default function PlatformSection() {
     offset: ["start end", "end end"], // <--- 'start end' é o segredo!
   });
 
+  // 💡 Criamos um progresso "suavizado" usando física de mola
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100, // Rigidez da resposta (quanto menor, mais suave)
+    damping: 30, // Amortecimento (evita que fique balançando no final)
+    restDelta: 0.001,
+  });
+
   // 2. Com o 0.0, a troca DINÂMICA começa IMEDIATAMENTE ao chegar na sessão
   // O segundo número (ex: 0.25) define onde ela termina de trocar.
-  const INICIO = 0.40;
-  const FIM = 0.60;
+  const INICIO = 0.4;
+  const FIM = 0.6;
 
-  const textX = useTransform(scrollYProgress, [INICIO, FIM], ["0%", "-55%"]);
-  const imageX = useTransform(scrollYProgress, [INICIO, FIM], ["0%", "42%"]);
+  const textX = useTransform(smoothProgress, [INICIO, FIM], ["0%", "-55%"]);
+  const imageX = useTransform(smoothProgress, [INICIO, FIM], ["0%", "42%"]);
 
-  const textY = useTransform(scrollYProgress, [INICIO, FIM], ["0px", "250px"]);
-  const imageY = useTransform(scrollYProgress, [INICIO, FIM], ["0px", "-40px"]);
+  const textY = useTransform(smoothProgress, [INICIO, FIM], ["0px", "250px"]);
+  const imageY = useTransform(smoothProgress, [INICIO, FIM], ["0px", "-40px"]);
 
   const textAlign = useTransform(
-    scrollYProgress,
+    smoothProgress,
     [INICIO, FIM],
     ["center", "left"],
   );
-  const imageScale = useTransform(scrollYProgress, [INICIO, FIM], [0.9, 1]);
+  const imageScale = useTransform(smoothProgress, [INICIO, FIM], [0.9, 1]);
 
   return (
     <ScrollContainer ref={containerRef}>
