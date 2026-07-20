@@ -48,7 +48,6 @@ const Badge = styled.span`
   padding: 0.4rem 1.2rem;
   border-radius: 50px;
   color: #a855f7;
-  font-family: "Orbitron", sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -56,7 +55,6 @@ const Badge = styled.span`
 `;
 
 const Title = styled.h2`
-  font-family: "Orbitron", sans-serif;
   font-size: 2.1rem;
   font-weight: 900;
   color: #ffffff;
@@ -74,7 +72,6 @@ const Title = styled.h2`
 `;
 
 const Description = styled.p`
-  font-family: "Inter", sans-serif;
   color: #8b949e;
   font-size: 0.98rem;
   line-height: 1.6;
@@ -82,6 +79,7 @@ const Description = styled.p`
 
 const ImageWrapper = styled(motion.div)`
   width: 100%;
+  margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
