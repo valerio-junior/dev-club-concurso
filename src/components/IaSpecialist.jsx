@@ -149,7 +149,7 @@ const CardFrame = styled.div`
     content: '';
     position: absolute;
     inset: -2px;
-    background: linear-gradient(45deg, #00f2fe, transparent, #7f00ff, transparent);
+    // background: linear-gradient(45deg, #00f2fe, transparent, #7f00ff, transparent);
     border-radius: 18px;
     z-index: -1;
     opacity: 0.4;
