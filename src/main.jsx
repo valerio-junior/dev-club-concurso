@@ -12,6 +12,7 @@ import StudyPlatform from './components/PlatformSection'
 import ProjectsSection from './components/ProjectSection'
 import TestimonialsStudents from './components/TestimonialsSection'
 import TeachersTech from './components/TeachersSection'
+import BonusDevClub from './components/BonusSection'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -27,5 +28,6 @@ createRoot(document.getElementById('root')).render(
     <ProjectsSection />
     <TestimonialsStudents />
     <TeachersTech />
+    <BonusDevClub />
   </StrictMode>,
 )

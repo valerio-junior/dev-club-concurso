@@ -57,7 +57,7 @@ const teachersData = [
       imgHenrique,
     bio: "Desenvolvedor Full-Stack com mais de 4 anos de experiência dedicados a transformar ideias em soluções digitais, utilizando as melhores ferramentas do mercado",
     linkedin: "https://www.linkedin.com/in/henrique-francisco-souza/",
-    instagram: "#",
+    instagram: "https://www.instagram.com/henrique_o_francisco/",
   },
   {
     id: 5,
