@@ -124,7 +124,7 @@ const Badge = styled.span`
 `;
 
 const Title = styled.h2`
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(2rem, 4vw, 2.1rem);
   font-weight: 900;
   color: #ffffff;
   line-height: 1.15;
