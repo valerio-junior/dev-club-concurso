@@ -11,6 +11,7 @@ import MentoringSection from './components/mentoring'
 import StudyPlatform from './components/PlatformSection'
 import ProjectsSection from './components/ProjectSection'
 import TestimonialsStudents from './components/TestimonialsSection'
+import TeachersTech from './components/TeachersSection'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -25,5 +26,6 @@ createRoot(document.getElementById('root')).render(
     <StudyPlatform />
     <ProjectsSection />
     <TestimonialsStudents />
+    <TeachersTech />
   </StrictMode>,
 )

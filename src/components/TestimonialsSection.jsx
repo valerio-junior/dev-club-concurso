@@ -1,68 +1,80 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useSpring,
+} from "framer-motion";
 
 // --- Dados dos Depoimentos ---
 const testimonialsData = [
   {
     id: 1,
     name: "Gabriel Santos",
-    role: "Desenvolvedor Front-end Jr",
-    company: "TechSolutions",
+    role: "Desenvolvedor Front-end Jr na ",
+    company: "Netflix",
     quote:
       '"A didática e os projetos práticos foram o divisor de águas na minha carreira. Antes do curso eu não sabia como montar um portfólio profissional, e em menos de 3 meses após terminar, consegui minha primeira vaga dev!"',
-    youtubeId: "LXb3EKWsInQ",
-    startTime: 30,
+    youtubeId: "S9uPNppGsGo",
+    startTime: 1,
+    endTime: 11,
   },
   {
     id: 2,
-    name: "Mariana Lima",
-    role: "Engenheira de Software",
-    company: "Fintech Growth",
+    name: "Rafaela Ballerini",
+    role: "Desenvolvedor Front-End na ",
+    company: "Ambev",
     quote:
       '"Eu vinha de outra área e tinha muito receio de não acompanhar. A comunidade e a estrutura dos projetos me deram a confiança necessária para encarar os processos seletivos e passar de primeira."',
-    youtubeId: "LDB4uaJ87e0",
-    startTime: 15,
+    youtubeId: "AB35iSr1YyA",
+    startTime: 61,
+    endTime: 68,
   },
   {
     id: 3,
     name: "Lucas Andrade",
-    role: "Desenvolvedor React",
-    company: "Studio Web",
+    role: "Desenvolvedor React no ",
+    company: "Ifood",
     quote:
       '"O grande diferencial foi aprender como o mercado realmente trabalha. Não foi só sintaxe de código, mas sim arquitetura, boas práticas e como resolver problemas reais do dia a dia."',
-    youtubeId: "QFaFIcGhPoM",
-    startTime: 45,
+    youtubeId: "zqkMdn1tANw",
+    startTime: 1,
+    endTime: 20,
   },
   {
     id: 4,
-    name: "Beatriz Ribeiro",
-    role: "Front-end Developer",
-    company: "Inovação Digital",
+    name: "Mosh Ramedami",
+    role: "Desenvolvedor Back-end no ",
+    company: "Facebook",
     quote:
       '"Consegui aplicar no meu trabalho atual tudo o que aprendi e logo fui promovida. A qualidade das aulas e o foco em UI/UX moderno me destacaram de todos os outros candidatos."',
     youtubeId: "Ke90Tje7VS0",
-    startTime: 10,
+    startTime: 3,
+    endTime: 14,
   },
   {
     id: 5,
-    name: "Felipe Melo",
-    role: "Desenvolvedor Full Stack Jr",
-    company: "CloudLab",
+    name: "João Alves",
+    role: "Desenvolvedor Full Stack Jr na ",
+    company: "Amazon",
     quote:
       '"O suporte durante o curso e o network que criei foram sensacionais. A sensação de ver meus projetos rodando em produção e recebendo elogios nas entrevistas não tem preço."',
-    youtubeId: "kqtD5dpn9C8",
-    startTime: 20,
+    youtubeId: "fTcWRLv56Xc",
+    startTime: 4,
+    endTime: 15,
   },
   {
     id: 6,
     name: "Camila Vasconcelos",
-    role: "UI Engineer",
-    company: "NextGen Tech",
+    role: "Desenvolvedor Front-end pleno na ",
+    company: "Globo",
     quote:
       '"Foi o melhor investimento que fiz no meu ano. Se você busca sair do zero e chegar ao mercado preparado para os desafios reais, esse é o caminho certo sem enrolação."',
-    youtubeId: "mU6anWqZJcc",
-    startTime: 5,
+    youtubeId: "bmuWW2kF60o",
+    startTime: 42,
+    endTime: 53,
   },
 ];
 
@@ -165,7 +177,9 @@ const TestimonialCard = styled(motion.div)`
   background: rgba(13, 17, 26, 0.9);
   border: 1px solid
     ${(props) =>
-      props.$isActive ? "rgba(168, 85, 247, 0.6)" : "rgba(255, 255, 255, 0.08)"};
+      props.$isActive
+        ? "rgba(168, 85, 247, 0.6)"
+        : "rgba(255, 255, 255, 0.08)"};
   border-radius: 24px;
   padding: 2.2rem;
   backdrop-filter: blur(20px);
@@ -332,6 +346,35 @@ const Dot = styled.button`
   }
 `;
 
+// Componente auxiliar para gerenciar o loop exato do trecho do vídeo
+function AutoLoopVideo({ youtubeId, startTime = 0, endTime, name }) {
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    // Se não houver endTime definido, deixa o vídeo rodar normalmente
+    if (!endTime || endTime <= startTime) return;
+
+    // Calcula a duração do trecho em milissegundos
+    const durationInMs = (endTime - startTime) * 1000;
+
+    // Quando o tempo acabar, altera a key para recarregar o iframe e reiniciar o loop
+    const timer = setTimeout(() => {
+      setKey((prevKey) => prevKey + 1);
+    }, durationInMs);
+
+    return () => clearTimeout(timer);
+  }, [key, startTime, endTime, youtubeId]);
+
+  return (
+    <iframe
+      key={key}
+      src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&cc_load_policy=0&hl=pt&start=${startTime}&end=${endTime}`}
+      title={`Depoimento de ${name}`}
+      allow="autoplay"
+    />
+  );
+}
+
 // --- Componente Principal ---
 export default function TestimonialsStudents() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -417,7 +460,8 @@ export default function TestimonialsStudents() {
             O que nossos <span>alunos dizem</span>
           </Title>
           <Subtitle>
-            Veja como profissionais saíram do zero e conquistaram suas vagas no mercado através dos nossos treinamentos.
+            Veja como profissionais saíram do zero e conquistaram suas vagas no
+            mercado através dos nossos treinamentos.
           </Subtitle>
         </HeaderBlock>
 
@@ -476,18 +520,19 @@ export default function TestimonialsStudents() {
                   <AuthorInfo>
                     <AuthorName>{item.name}</AuthorName>
                     <AuthorRole>
-                      {item.role} na <strong>{item.company}</strong>
+                      {item.role}<strong>{item.company}</strong>
                     </AuthorRole>
                   </AuthorInfo>
                 </QuoteContainer>
 
                 <VideoContainer>
-                  {/* O vídeo só carrega o iframe quando for o card do meio para rodar fluido */}
+                  {/* O vídeo só carrega o iframe dinâmico quando for o card do meio */}
                   {isActive ? (
-                    <iframe
-                      src={`https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&loop=1&playlist=${item.youtubeId}&start=${item.startTime}`}
-                      title={`Depoimento de ${item.name}`}
-                      allow="autoplay"
+                    <AutoLoopVideo
+                      youtubeId={item.youtubeId}
+                      startTime={item.startTime}
+                      endTime={item.endTime}
+                      name={item.name}
                     />
                   ) : (
                     <img
