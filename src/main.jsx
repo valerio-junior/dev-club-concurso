@@ -10,6 +10,7 @@ import IaAgents from './components/IaSpecialist'
 import MentoringSection from './components/mentoring'
 import StudyPlatform from './components/PlatformSection'
 import ProjectsSection from './components/ProjectSection'
+import TestimonialsStudents from './components/TestimonialsSection'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -23,5 +24,6 @@ createRoot(document.getElementById('root')).render(
     <MentoringSection />
     <StudyPlatform />
     <ProjectsSection />
+    <TestimonialsStudents />
   </StrictMode>,
 )
