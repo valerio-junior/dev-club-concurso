@@ -90,7 +90,9 @@ export default function GuaranteeDevClubDinamic({ children }) {
           y: guaranteeY,
         }}
       >
-        <GuaranteeTitle><span>Garantia Incondicional</span> de 7 Dias</GuaranteeTitle>
+        <GuaranteeTitle>
+          <span>Garantia Incondicional</span> de 7 Dias
+        </GuaranteeTitle>
         <GuaranteeDescription>
           Teste todo o conteúdo, acesse as mentorias e ferramentas. Se achar que
           não é para você, devolvemos 100% do seu investimento.

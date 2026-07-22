@@ -191,7 +191,6 @@ export default function RevealSectionDevClub() {
       const wrapperWidth = wRect.width;
       const wrapperHeight = wRect.height;
 
-
       const dCenterX = dRect.left - wRect.left + dRect.width / 2;
       const cCenterX = cRect.left - wRect.left + cRect.width / 2;
 
@@ -202,7 +201,9 @@ export default function RevealSectionDevClub() {
       const raiseAmount = 35; // deve corresponder ao translate y usado nas letras
 
       // Ajuste vertical para alinhar o cursor à linha superior das letras
-      const cursorHeight = cursorRef.current ? cursorRef.current.getBoundingClientRect().height : 24;
+      const cursorHeight = cursorRef.current
+        ? cursorRef.current.getBoundingClientRect().height
+        : 24;
       const cursorOffset = Math.max(4, Math.round(cursorHeight * 0.15));
       const extraOffset = 0; // base: sem deslocamento global
       const totalCursorOffset = cursorOffset + extraOffset;
@@ -215,8 +216,12 @@ export default function RevealSectionDevClub() {
       const letterScaleD = [1, 1, 1.25, 1.25, 1.25, 1.25, 1, 1, 1, 1];
       const letterScaleC = [1, 1, 1, 1, 1.25, 1.25, 1.25, 1.25, 1, 1];
 
-      const dScaleOffsets = letterScaleD.map((s) => (s - 1) * (dRect.height / 2));
-      const cScaleOffsets = letterScaleC.map((s) => (s - 1) * (cRect.height / 2));
+      const dScaleOffsets = letterScaleD.map(
+        (s) => (s - 1) * (dRect.height / 2),
+      );
+      const cScaleOffsets = letterScaleC.map(
+        (s) => (s - 1) * (cRect.height / 2),
+      );
 
       const leftVals = [
         wrapperWidth / 2,
@@ -245,12 +250,16 @@ export default function RevealSectionDevClub() {
           baseY = dCenterY;
           yShift = letterDY_D[idx];
           scaleOffset = dScaleOffsets[idx] || 0;
-          return baseY + yShift + (totalCursorOffset + dSpecificAdjust) - scaleOffset;
+          return (
+            baseY + yShift + (totalCursorOffset + dSpecificAdjust) - scaleOffset
+          );
         } else if (baseX === cCenterX) {
           baseY = cCenterY;
           yShift = letterDY_C[idx];
           scaleOffset = cScaleOffsets[idx] || 0;
-           return baseY + yShift + (totalCursorOffset + cSpecificAdjust) - scaleOffset;
+          return (
+            baseY + yShift + (totalCursorOffset + cSpecificAdjust) - scaleOffset
+          );
         }
 
         return baseY + yShift + totalCursorOffset - scaleOffset;
@@ -272,7 +281,23 @@ export default function RevealSectionDevClub() {
         {/* CURSOR VISÍVEL E ALINHADO DENTRO DAS LETRAS */}
         <MovingCursor
           ref={cursorRef}
-          variants={cursorAnim ? { animate: { left: cursorAnim.left, top: cursorAnim.top, transition: { duration: 16, repeat: Infinity, repeatDelay: 0.8, ease: "easeInOut", times: timeline, }, }, } : cursorVariants}
+          variants={
+            cursorAnim
+              ? {
+                  animate: {
+                    left: cursorAnim.left,
+                    top: cursorAnim.top,
+                    transition: {
+                      duration: 16,
+                      repeat: Infinity,
+                      repeatDelay: 0.8,
+                      ease: "easeInOut",
+                      times: timeline,
+                    },
+                  },
+                }
+              : cursorVariants
+          }
           animate="animate"
         >
           <MousePointer viewBox="0 0 24 24">

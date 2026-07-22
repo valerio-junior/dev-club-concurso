@@ -115,7 +115,7 @@ const faqData = [
   {
     question: "Quem é o Rodolfo?",
     answer:
-      "De ex eletricista para um dos melhores mentores e profissionais da área da tecnologia, ja passou dificuldades e teve medo e dúvidas se iria conseguir igual a grande maioria de vocês, então ele é o mentor perfeito para você!",
+      "De ex eletricista para um dos melhores mentores e profissionais da área da tecnologia, ja passou dificuldades, teve medos e dúvidas se iria conseguir, igual a grande maioria de vocês, comprou cursos que não tinham didáticas tão boas, e com isso ele sabe a sua dor, e trás o melhor método de ensino para você!",
   },
   {
     question: "Porque devo comprar o curso de vocês?",
@@ -125,7 +125,7 @@ const faqData = [
   {
     question: "Teremos acesso a comunidade?",
     answer:
-      "Sim! e temos muitos profissionais, as que começaram agora e também as que já sao Pleno, Sênior e podem te ajudar, você não esta sozinho!",
+      "Sim! e temos muitos profissionais, os que começaram agora e também os que já são Pleno, Sênior e podem te ajudar, você não esta sozinho!",
   },
   {
     question: "O curso é para iniciantes ou precisa ter uma base?",
@@ -140,7 +140,7 @@ const faqData = [
   {
     question: "O curso disponibiliza certificado?",
     answer:
-      "Sim, e com grande peso no mercado de trabalho, por mostrar que esta estudando e acquiring conhecimentos técnicos, e por fazer parte dessa grande familia DevClub.",
+      "Sim, e com grande peso no mercado de trabalho, por mostrar que esta estudando e adquirindo conhecimentos técnicos, e por fazer parte dessa grande familia DevClub.",
   },
   {
     question: "Qual são as formas de pagamento?",
