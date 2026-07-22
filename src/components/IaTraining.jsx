@@ -298,7 +298,7 @@ export default function AISection() {
   const part2 = "IA CLUB".split("");
 
   return (
-    <SectionContainer id="ia-section">
+    <SectionContainer id="ecosystem-ia-club">
       <TextContent>
         <AnimatedTitle
           variants={titleContainerVariants}

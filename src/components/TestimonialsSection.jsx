@@ -452,7 +452,7 @@ export default function TestimonialsStudents() {
   };
 
   return (
-    <SectionContainer ref={containerRef}>
+    <SectionContainer id="testimonials" ref={containerRef}>
       <ContentLayout style={{ opacity: sectionOpacity, y: sectionY }}>
         <HeaderBlock>
           <Badge>HISTÓRIAS DE SUCESSO</Badge>

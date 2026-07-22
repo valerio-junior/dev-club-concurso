@@ -376,7 +376,7 @@ export default function TeachersTech() {
   };
 
   return (
-    <ScrollSection ref={targetRef}>
+    <ScrollSection id="teacher" ref={targetRef}>
       <StickyViewport>
         {/* Título Centralizado */}
         <HeaderBlock>

@@ -274,7 +274,7 @@ export default function ProjectsSection() {
   const gridY = useTransform(smoothProgress, [0.2, 0.8], ["40px", "0px"]);
 
   return (
-    <ScrollContainer ref={containerRef}>
+    <ScrollContainer id="projects" ref={containerRef}>
       <ContentLayout>
         {/* Cabeçalho */}
         <HeaderBlock style={{ opacity: headerOpacity, y: headerY }}>

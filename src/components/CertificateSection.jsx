@@ -128,7 +128,7 @@ const CertificateCard = styled(motion.div)`
 export default function CertificatesDevClub() {
   return (
     <Container>
-      <HeaderBlock>
+      <HeaderBlock id="certificates">
         <Badge>CONQUISTAS & CERTIFICAÇÕES</Badge>
         <Title>
           Certificados de <span>Especialização</span>

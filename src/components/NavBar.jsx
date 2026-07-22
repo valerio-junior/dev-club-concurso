@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
-import { User, ChevronDown, GraduationCap, Code, Brain, ArrowUpRight } from 'lucide-react';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  User,
+  ChevronDown,
+  GraduationCap,
+  Code,
+  Brain,
+  ArrowUpRight,
+} from "lucide-react";
+import DevClubLogo from "../assets/logo-devclub.png"
 
 const NavContainer = styled(motion.nav)`
   position: fixed;
@@ -24,47 +32,17 @@ const NavContainer = styled(motion.nav)`
   }
 `;
 
-// Logo Customizada DevClub (Diamante + Tags de Código)
+// Logo Atualizada com Imagem Oficial
 const LogoArea = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
   cursor: pointer;
 `;
 
-const LogoIcon = styled.div`
-  width: 38px;
-  height: 38px;
-  position: relative;
-  background: linear-gradient(135deg, #00f2fe 0%, #7f00ff 100%);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 20px rgba(0, 242, 254, 0.35);
-
-  &::before {
-    content: '</>';
-    font-weight: 900;
-    font-size: 0.9rem;
-    color: #030308;
-    letter-spacing: -1px;
-  }
-`;
-
-const LogoText = styled.span`
-  font-size: 1.2rem;
-  font-weight: 900;
-  letter-spacing: 2px;
-  background: linear-gradient(to right, #ffffff, #8b9bb4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  span {
-    background: linear-gradient(to right, #00f2fe, #4facfe);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+const LogoImage = styled.img`
+  height: 42px;
+  width: auto;
+  object-fit: contain;
 `;
 
 const NavLinks = styled.div`
@@ -73,7 +51,7 @@ const NavLinks = styled.div`
   gap: 2.5rem;
 
   @media (max-width: 900px) {
-    display: none; // Menu hamburguer pode ser implementado depois se necessário
+    display: none;
   }
 `;
 
@@ -101,7 +79,6 @@ const NavLink = styled.a`
   }
 `;
 
-// Estilização das caixas de Dropdown (Submenus)
 const DropdownBox = styled(motion.div)`
   position: absolute;
   top: 75px;
@@ -112,7 +89,9 @@ const DropdownBox = styled(motion.div)`
   border: 1px solid rgba(0, 242, 254, 0.15);
   border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 242, 254, 0.05);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(0, 242, 254, 0.05);
   backdrop-filter: blur(20px);
   z-index: 1001;
 `;
@@ -137,7 +116,7 @@ const DropdownItem = styled(motion.div)`
   &:hover {
     background: rgba(0, 242, 254, 0.05);
     color: #ffffff;
-    
+
     svg {
       color: #00f2fe;
     }
@@ -181,11 +160,6 @@ const PrimaryButton = styled(motion.button)`
   display: flex;
   align-items: center;
   gap: 8px;
-  
-  span {
-    display: flex;
-    align-items: center;
-  }
 `;
 
 export default function Navbar() {
@@ -195,27 +169,24 @@ export default function Navbar() {
     <NavContainer
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      {/* 1° Canto Esquerdo: Logo do DevClub */}
-      <LogoArea onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-        <LogoIcon />
-        <LogoText>DEV<span>CLUB</span></LogoText>
+      {/* Logo Oficial DevClub em Imagem */}
+      <LogoArea onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <LogoImage src={DevClubLogo} alt="DevClub Logo" />
       </LogoArea>
 
-      {/* Links Centrais com Dropdowns */}
       <NavLinks>
-        {/* 2° Formações */}
         <NavItemContainer
-          onMouseEnter={() => setActiveDropdown('formacoes')}
+          onMouseEnter={() => setActiveDropdown("formacoes")}
           onMouseLeave={() => setActiveDropdown(null)}
         >
-          <NavLink onClick={() => handleScrollTo('formacoes-section')}>
+          <NavLink>
             FORMAÇÕES <ChevronDown size={14} />
           </NavLink>
 
           <AnimatePresence>
-            {activeDropdown === 'formacoes' && (
+            {activeDropdown === "formacoes" && (
               <DropdownBox
                 initial={{ opacity: 0, y: 15, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -231,7 +202,14 @@ export default function Navbar() {
                 <DropdownItem whileHover={{ x: 5 }}>
                   <Code size={16} /> Automações Avançadas com N8N
                 </DropdownItem>
-                <DropdownItem whileHover={{ x: 5 }} style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.75rem', marginTop: '0.5rem' }}>
+                <DropdownItem
+                  whileHover={{ x: 5 }}
+                  style={{
+                    borderTop: "1px solid rgba(255,255,255,0.05)",
+                    paddingTop: "0.75rem",
+                    marginTop: "0.5rem",
+                  }}
+                >
                   <GraduationCap size={16} /> DevClub FullStack
                 </DropdownItem>
                 <DropdownItem whileHover={{ x: 5 }}>
@@ -245,17 +223,16 @@ export default function Navbar() {
           </AnimatePresence>
         </NavItemContainer>
 
-        {/* 3° Faculdade */}
         <NavItemContainer
-          onMouseEnter={() => setActiveDropdown('faculdade')}
+          onMouseEnter={() => setActiveDropdown("faculdade")}
           onMouseLeave={() => setActiveDropdown(null)}
         >
-          <NavLink onClick={() => handleScrollTo('faculdade-section')}>
+          <NavLink>
             FACULDADE <ChevronDown size={14} />
           </NavLink>
 
           <AnimatePresence>
-            {activeDropdown === 'faculdade' && (
+            {activeDropdown === "faculdade" && (
               <DropdownBox
                 initial={{ opacity: 0, y: 15, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -271,14 +248,16 @@ export default function Navbar() {
         </NavItemContainer>
       </NavLinks>
 
-      {/* 4° & 5° Lado Direito: Área do aluno e Chamada de Ação */}
       <ActionArea>
         <StudentAreaLink href="#">
           ÁREA DO ALUNO <User size={16} />
         </StudentAreaLink>
 
         <PrimaryButton
-          whileHover={{ scale: 1.05, boxShadow: '0 0 25px rgba(0, 242, 254, 0.45)' }}
+          whileHover={{
+            scale: 1.05,
+            boxShadow: "0 0 25px rgba(0, 242, 254, 0.45)",
+          }}
           whileTap={{ scale: 0.95 }}
         >
           QUERO SER ALUNO <ArrowUpRight size={14} />

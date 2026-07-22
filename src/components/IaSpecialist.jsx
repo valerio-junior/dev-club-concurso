@@ -282,7 +282,7 @@ export default function IaAgents() {
   const currentAgent = AI_AGENTS[currentIndex];
 
   return (
-    <SectionContainer>
+    <SectionContainer id='mentors-ia'>
       <ContentWrapper>
         
         {/* Lado Esquerdo: Textos e Features */}

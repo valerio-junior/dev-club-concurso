@@ -342,7 +342,7 @@ export default function BonusDevClub() {
   };
 
   return (
-    <Container>
+    <Container id="bonus">
       <HeaderBlock>
         <Badge>CONTEÚDO EXTRA</Badge>
 
