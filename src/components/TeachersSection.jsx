@@ -68,7 +68,7 @@ const teachersData = [
       imgJuliana,
     bio: "Especialista em recrutamento para a área de tecnologia. Prepara os alunos para entrevistas, otimização de perfil no LinkedIn e simulações de RH.",
     linkedin: "https://www.linkedin.com/in/nuness-juliana/?locale=pt",
-    instagram: "#",
+    instagram: "https://www.instagram.com/juhnunestipo1?igsh=cnk1bm94dHFieWkx&utm_source=qr",
   },
   {
     id: 6,
@@ -78,7 +78,7 @@ const teachersData = [
     image:
       imgMateus,
     bio: "Especialista em metodologia mão na massa. Atua guiando os estudantes na construção de projetos completos e portfólios competitivos, com ferramentas de IA para construção de códigos e agentes de IA.",
-    linkedin: "#",
+    linkedin: "https://www.linkedin.com/in/mateus-nogueira-10b519281/",
     instagram: "https://www.instagram.com/mateus.nnogueira/",
   },
 ];

@@ -8,6 +8,7 @@ const ScrollContainer = styled.div`
   height: 130vh;
   background-color: #030308;
   position: relative;
+  padding-top: 4rem;
 `;
 
 const StickyWrapper = styled.div`
@@ -55,7 +56,7 @@ const Badge = styled.span`
 `;
 
 const Title = styled.h2`
-  font-size: 2.1rem;
+  font-size: 2rem;
   font-weight: 900;
   color: #ffffff;
   line-height: 1.2;

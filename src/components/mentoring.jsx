@@ -52,7 +52,7 @@ const SectionBadge = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 900;
   color: #ffffff;
   line-height: 1.1;

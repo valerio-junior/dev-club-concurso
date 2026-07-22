@@ -13,6 +13,9 @@ import ProjectsSection from './components/ProjectSection'
 import TestimonialsStudents from './components/TestimonialsSection'
 import TeachersTech from './components/TeachersSection'
 import BonusDevClub from './components/BonusSection'
+import CertificatesDevClub from './components/CertificateSection'
+import SalaryTechnology from './components/SalarySection'
+import GuaranteeDevClub from './components/GuaranteeSection'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -29,5 +32,8 @@ createRoot(document.getElementById('root')).render(
     <TestimonialsStudents />
     <TeachersTech />
     <BonusDevClub />
+    <CertificatesDevClub />
+    <SalaryTechnology />
+    < GuaranteeDevClub />
   </StrictMode>,
 )

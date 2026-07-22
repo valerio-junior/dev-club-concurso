@@ -74,7 +74,7 @@ const Badge = styled.div`
 `;
 
 const MainTitle = styled.h2`
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 900;
   line-height: 1.2;
   color: #ffffff;
