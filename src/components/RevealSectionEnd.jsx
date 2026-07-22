@@ -69,7 +69,7 @@ const MovingCursor = styled(motion.div)`
   display: flex;
   align-items: center;
   gap: 6px;
-  transform: translate(-50%, -100%);
+  transform: translate(-50%, -50%);
   will-change: left, top;
 `;
 
@@ -173,6 +173,7 @@ export default function RevealSectionDevClub() {
   const wrapperRef = useRef(null);
   const dRef = useRef(null);
   const cRef = useRef(null);
+  const cursorRef = useRef(null);
 
   const [cursorAnim, setCursorAnim] = useState(null);
 
@@ -194,37 +195,68 @@ export default function RevealSectionDevClub() {
       const dCenterX = dRect.left - wRect.left + dRect.width / 2;
       const cCenterX = cRect.left - wRect.left + cRect.width / 2;
 
-      const dTop = dRect.top - wRect.top; // topo da letra D relativo ao wrapper
-      const cTop = cRect.top - wRect.top; // topo da letra C relativo ao wrapper
+      const dCenterY = dRect.top - wRect.top + dRect.height / 2;
+      const cCenterY = cRect.top - wRect.top + cRect.height / 2;
 
       const offscreenY = wrapperHeight + 120; // posição inicial/final abaixo
       const raiseAmount = 35; // deve corresponder ao translate y usado nas letras
 
-      const lefts = [
-        wrapperWidth / 2,
-        dCenterX,
-        dCenterX,
-        cCenterX,
-        cCenterX,
-        dCenterX,
-        dCenterX,
-        cCenterX,
-        cCenterX,
-        wrapperWidth / 2,
-      ].map((v) => `${v}px`);
+      // Ajuste vertical para alinhar o cursor à linha superior das letras
+      const cursorHeight = cursorRef.current ? cursorRef.current.getBoundingClientRect().height : 24;
+      const cursorOffset = Math.max(4, Math.round(cursorHeight * 0.15));
+      const extraOffset = 0; // base: sem deslocamento global
+      const totalCursorOffset = cursorOffset + extraOffset;
+      const dSpecificAdjust = -48; // sobe o cursor mais 48px quando sobre a letra D
+      const cSpecificAdjust = -6; // sobe o cursor 6px quando sobre a letra C
 
-      const tops = [
-        offscreenY,
-        dTop,
-        dTop - raiseAmount,
-        cTop,
-        cTop - raiseAmount,
-        dTop - raiseAmount,
-        dTop,
-        cTop - raiseAmount,
-        cTop,
-        offscreenY,
-      ].map((v) => `${v}px`);
+      // Valores de y e scale usados nas letras (mesmos frames da timeline)
+      const letterDY_D = [0, 0, -35, -35, -35, -35, 0, 0, 0, 0];
+      const letterDY_C = [0, 0, 0, 0, -35, -35, -35, -35, 0, 0];
+      const letterScaleD = [1, 1, 1.25, 1.25, 1.25, 1.25, 1, 1, 1, 1];
+      const letterScaleC = [1, 1, 1, 1, 1.25, 1.25, 1.25, 1.25, 1, 1];
+
+      const dScaleOffsets = letterScaleD.map((s) => (s - 1) * (dRect.height / 2));
+      const cScaleOffsets = letterScaleC.map((s) => (s - 1) * (cRect.height / 2));
+
+      const leftVals = [
+        wrapperWidth / 2,
+        dCenterX,
+        dCenterX,
+        cCenterX,
+        cCenterX,
+        dCenterX,
+        dCenterX,
+        cCenterX,
+        cCenterX,
+        wrapperWidth / 2,
+      ];
+
+      const lefts = leftVals.map((v) => `${v}px`);
+
+      const topsVals = leftVals.map((baseX, idx) => {
+        if (idx === 0 || idx === leftVals.length - 1) return offscreenY;
+
+        let baseY = wrapperHeight / 2;
+        let yShift = 0;
+        let scaleOffset = 0;
+
+        // subtrai scaleOffset para subir o cursor quando a letra aumenta
+        if (baseX === dCenterX) {
+          baseY = dCenterY;
+          yShift = letterDY_D[idx];
+          scaleOffset = dScaleOffsets[idx] || 0;
+          return baseY + yShift + (totalCursorOffset + dSpecificAdjust) - scaleOffset;
+        } else if (baseX === cCenterX) {
+          baseY = cCenterY;
+          yShift = letterDY_C[idx];
+          scaleOffset = cScaleOffsets[idx] || 0;
+           return baseY + yShift + (totalCursorOffset + cSpecificAdjust) - scaleOffset;
+        }
+
+        return baseY + yShift + totalCursorOffset - scaleOffset;
+      });
+
+      const tops = topsVals.map((v) => `${v}px`);
 
       setCursorAnim({ left: lefts, top: tops });
     }
@@ -239,6 +271,7 @@ export default function RevealSectionDevClub() {
       <WordWrapper ref={wrapperRef}>
         {/* CURSOR VISÍVEL E ALINHADO DENTRO DAS LETRAS */}
         <MovingCursor
+          ref={cursorRef}
           variants={cursorAnim ? { animate: { left: cursorAnim.left, top: cursorAnim.top, transition: { duration: 16, repeat: Infinity, repeatDelay: 0.8, ease: "easeInOut", times: timeline, }, }, } : cursorVariants}
           animate="animate"
         >
