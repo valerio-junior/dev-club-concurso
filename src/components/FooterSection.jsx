@@ -8,9 +8,8 @@ import DevClubLogo from "../assets/logo-devclub.png";
 // --- Styled Components ---
 
 const FooterContainer = styled.footer`
-  position: sticky;
-  top: 0;
-  z-index: 1;
+  position: relative; /* Mantém no fluxo para ser empurrado para cima */
+  z-index: 4;
   background-color: #030308;
   color: #ffffff;
   padding: 5rem 6% 4rem 6%;
@@ -18,6 +17,7 @@ const FooterContainer = styled.footer`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9); /* Sombra para destacar a borda do Footer subindo */
 `;
 
 const FooterContent = styled.div`

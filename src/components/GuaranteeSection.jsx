@@ -13,8 +13,8 @@ const SectionContainer = styled.section`
   position: sticky; /* Torna a garantia fixa durante a rolagem */
   top: 0;
   min-height: 100vh;
-  z-index: 1; /* Fica no plano de fundo */
   overflow: hidden;
+  z-index: 1;
 `;
 
 const BackgroundGlow = styled.div`
@@ -119,7 +119,7 @@ const Badge = styled.span`
 `;
 
 const Title = styled.h2`
-  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
+  font-size: clamp(1.8rem, 2.5vw, 2rem);
   font-weight: 900;
   color: #ffffff;
   margin-bottom: 1rem;
@@ -181,7 +181,6 @@ export default function GuaranteeDevClub() {
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        {/* LADO ESQUERDO: Selo com Textos Espelhados em Eixo Horizontal */}
         <SealContainer>
           <SealGlow />
 
@@ -197,7 +196,6 @@ export default function GuaranteeDevClub() {
             }}
           >
             <defs>
-              {/* Gradiente Azul das Linhas Circulares */}
               <linearGradient
                 id="blueRingGrad"
                 x1="0"
@@ -211,7 +209,6 @@ export default function GuaranteeDevClub() {
                 <stop offset="100%" stopColor="#1d4ed8" />
               </linearGradient>
 
-              {/* Fundo do Brasão no centro */}
               <linearGradient
                 id="shieldCenterBg"
                 x1="150"
@@ -224,14 +221,10 @@ export default function GuaranteeDevClub() {
                 <stop offset="100%" stopColor="#0f172a" />
               </linearGradient>
 
-              {/* Guia Circular DIREITA (De Cima pra Baixo, do topo ao fundo) */}
               <path id="rightTextPath" d="M 150 40 A 110 110 0 0 1 150 260" />
-
-              {/* Guia Circular ESQUERDA (De Cima pra Baixo, do topo ao fundo) */}
               <path id="leftTextPath" d="M 150 260 A 110 110 0 0 1 150 40" />
             </defs>
 
-            {/* 1. LINHA / CÍRCULO EXTERNO ("O" GRANDE SÓLIDO) */}
             <circle
               cx="150"
               cy="150"
@@ -240,7 +233,6 @@ export default function GuaranteeDevClub() {
               strokeWidth="2"
             />
 
-            {/* 2. TEXTO DIREITA: "GARANTIA INCONDICIONAL" */}
             <text
               fill="#60a5fa"
               fontSize="9"
@@ -256,7 +248,6 @@ export default function GuaranteeDevClub() {
               </textPath>
             </text>
 
-            {/* 3. TEXTO ESQUERDA: "GARANTIA INCONDICIONAL" (Espelhado na mesma linha) */}
             <text
               fill="#60a5fa"
               fontSize="9"
@@ -272,7 +263,6 @@ export default function GuaranteeDevClub() {
               </textPath>
             </text>
 
-            {/* 4. LINHA / CÍRCULO INTERNO ("O" MENOR) */}
             <circle
               cx="150"
               cy="150"
@@ -281,10 +271,8 @@ export default function GuaranteeDevClub() {
               strokeWidth="2"
             />
 
-            {/* Fundo sutil do centro */}
             <circle cx="150" cy="150" r="80" fill="#030712" fillOpacity="0.6" />
 
-            {/* 5. BRASÃO MENORZINHO NO CENTRO */}
             <g transform="translate(150, 148) scale(0.65)">
               <path
                 d="M 0 -65 L 48 -40 V 10 C 48 50 20 80 0 92 C -20 80 -48 50 -48 10 V -40 L 0 -65 Z"
@@ -325,7 +313,6 @@ export default function GuaranteeDevClub() {
           </svg>
         </SealContainer>
 
-        {/* LADO DIREITO: Informações da Garantia */}
         <ContentBlock>
           <Badge>Garantia Incondicional</Badge>
 

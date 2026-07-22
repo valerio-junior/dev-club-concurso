@@ -2,19 +2,24 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 
-// --- Styled Components ---
+// --- Styled Components do FAQ ---
 
 const FaqSectionContainer = styled.section`
   position: relative;
-  z-index: 2; /* Fica por cima da seção de Garantia */
-  background-color: #030308; /* Mesma cor do fundo total do projeto */
-  border-top: 1px solid #030308; /* Borda integrada ao fundo */
+  z-index: 3; /* Camada mais alta para ficar POR CIMA da GarantiaDinamica */
+  margin-top: -15vh; /* Faz encaixar por cima como papel */
+  background-color: #030308;
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
 
-  /* Sombra sutil no topo para criar o efeito visual de sobreposição de papel/folha */
-  box-shadow: 0 -25px 50px rgba(0, 0, 0, 0.9);
+  /* Sombra no topo para dar o visual de elevação/camada sobreposta */
+  box-shadow:
+    0 -25px 50px rgba(0, 0, 0, 0.95),
+    0 -1px 2px rgba(59, 130, 246, 0.2);
 
   padding: 7rem 6%;
   min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -72,10 +77,10 @@ const AccordionItem = styled.div`
   transition:
     border-color 0.3s ease,
     background-color 0.3s ease;
-  cursor: pointer; /* <-- Cursor de clique no card todo */
+  cursor: pointer;
 
   &:hover {
-    background: rgba(17, 24, 39, 0.85); /* Efeito visual ao passar o mouse */
+    background: rgba(17, 24, 39, 0.85);
   }
 `;
 
@@ -135,7 +140,7 @@ const faqData = [
   {
     question: "O curso disponibiliza certificado?",
     answer:
-      "Sim, e com grande peso no mercado de trabalho, por mostrar que esta estudando e adquirindo conhecimentos técnicos, e por fazer parte dessa grande familia DevClub.",
+      "Sim, e com grande peso no mercado de trabalho, por mostrar que esta estudando e acquiring conhecimentos técnicos, e por fazer parte dessa grande familia DevClub.",
   },
   {
     question: "Qual são as formas de pagamento?",

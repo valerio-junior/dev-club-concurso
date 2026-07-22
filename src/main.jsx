@@ -16,8 +16,10 @@ import BonusDevClub from './components/BonusSection'
 import CertificatesDevClub from './components/CertificateSection'
 import SalaryTechnology from './components/SalarySection'
 import GuaranteeDevClub from './components/GuaranteeSection'
+import GuaranteeDevClubDinamic from './components/GuaranteeSectionDinamic'
 import QuestionsSection from './components/FaqSection'
 import FooterDevClub from './components/FooterSection'
+import RevealSectionDevClub from './components/RevealSectionEnd'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -37,7 +39,9 @@ createRoot(document.getElementById('root')).render(
     <CertificatesDevClub />
     <SalaryTechnology />
     <GuaranteeDevClub />
+    <GuaranteeDevClubDinamic />
     <QuestionsSection />
     < FooterDevClub />
+    <RevealSectionDevClub />
   </StrictMode>,
 )
