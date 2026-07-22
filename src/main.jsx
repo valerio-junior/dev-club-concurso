@@ -16,6 +16,7 @@ import BonusDevClub from './components/BonusSection'
 import CertificatesDevClub from './components/CertificateSection'
 import SalaryTechnology from './components/SalarySection'
 import GuaranteeDevClub from './components/GuaranteeSection'
+import QuestionsSection from './components/FaqSection'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -34,6 +35,7 @@ createRoot(document.getElementById('root')).render(
     <BonusDevClub />
     <CertificatesDevClub />
     <SalaryTechnology />
-    < GuaranteeDevClub />
+    <GuaranteeDevClub />
+    <QuestionsSection />
   </StrictMode>,
 )

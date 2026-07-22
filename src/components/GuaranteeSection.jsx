@@ -10,7 +10,10 @@ const SectionContainer = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: sticky; /* Torna a garantia fixa durante a rolagem */
+  top: 0;
+  min-height: 100vh;
+  z-index: 1; /* Fica no plano de fundo */
   overflow: hidden;
 `;
 
