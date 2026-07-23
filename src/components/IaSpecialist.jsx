@@ -16,7 +16,7 @@ import imgCurriculo from '../assets/especialista-curriculo.jpg';
 const SectionContainer = styled.section`
   min-height: 90vh;
   width: 100%;
-  background-color: #030308;
+  background-color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
