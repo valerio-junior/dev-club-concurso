@@ -301,7 +301,6 @@ export default function Hero() {
         currentState = 'hold'; 
       } else if (cycleTimer >= ATTRACT_TIME + HOLD_TIME && cycleTimer < ATTRACT_TIME + HOLD_TIME + TENSION_TIME) {
         currentState = 'tension';
-        // Calcula o fator progressivo de 0 a 1 dentro do estágio de tensão
         tensionProgress = (cycleTimer - (ATTRACT_TIME + HOLD_TIME)) / TENSION_TIME;
       } else if (cycleTimer >= ATTRACT_TIME + HOLD_TIME + TENSION_TIME) {
         currentState = 'decay'; // Momento do estouro/explosão massiva

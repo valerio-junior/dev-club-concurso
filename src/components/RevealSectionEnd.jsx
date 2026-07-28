@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useLayoutEffect, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
@@ -176,9 +176,12 @@ export default function RevealSectionDevClub() {
   const cursorRef = useRef(null);
 
   const [cursorAnim, setCursorAnim] = useState(null);
+  const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
-    function compute() {
+  useLayoutEffect(() => {
+    let frameId = null;
+
+    const compute = () => {
       const wrapper = wrapperRef.current;
       const dEl = dRef.current;
       const cEl = cRef.current;
@@ -197,20 +200,16 @@ export default function RevealSectionDevClub() {
       const dCenterY = dRect.top - wRect.top + dRect.height / 2;
       const cCenterY = cRect.top - wRect.top + cRect.height / 2;
 
-      const offscreenY = wrapperHeight + 120; // posição inicial/final abaixo
-      const raiseAmount = 35; // deve corresponder ao translate y usado nas letras
+      const offscreenY = wrapperHeight + 120;
 
-      // Ajuste vertical para alinhar o cursor à linha superior das letras
       const cursorHeight = cursorRef.current
         ? cursorRef.current.getBoundingClientRect().height
         : 24;
       const cursorOffset = Math.max(4, Math.round(cursorHeight * 0.15));
-      const extraOffset = 0; // base: sem deslocamento global
-      const totalCursorOffset = cursorOffset + extraOffset;
-      const dSpecificAdjust = -48; // sobe o cursor mais 48px quando sobre a letra D
-      const cSpecificAdjust = -6; // sobe o cursor 6px quando sobre a letra C
+      const totalCursorOffset = cursorOffset;
+      const dSpecificAdjust = -48;
+      const cSpecificAdjust = -6;
 
-      // Valores de y e scale usados nas letras (mesmos frames da timeline)
       const letterDY_D = [0, 0, -35, -35, -35, -35, 0, 0, 0, 0];
       const letterDY_C = [0, 0, 0, 0, -35, -35, -35, -35, 0, 0];
       const letterScaleD = [1, 1, 1.25, 1.25, 1.25, 1.25, 1, 1, 1, 1];
@@ -245,7 +244,6 @@ export default function RevealSectionDevClub() {
         let yShift = 0;
         let scaleOffset = 0;
 
-        // subtrai scaleOffset para subir o cursor quando a letra aumenta
         if (baseX === dCenterX) {
           baseY = dCenterY;
           yShift = letterDY_D[idx];
@@ -266,13 +264,17 @@ export default function RevealSectionDevClub() {
       });
 
       const tops = topsVals.map((v) => `${v}px`);
-
       setCursorAnim({ left: lefts, top: tops });
-    }
+      setIsReady(true);
+    };
 
-    compute();
+    frameId = requestAnimationFrame(compute);
     window.addEventListener("resize", compute);
-    return () => window.removeEventListener("resize", compute);
+
+    return () => {
+      if (frameId) cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", compute);
+    };
   }, []);
 
   return (
@@ -281,6 +283,7 @@ export default function RevealSectionDevClub() {
         {/* CURSOR VISÍVEL E ALINHADO DENTRO DAS LETRAS */}
         <MovingCursor
           ref={cursorRef}
+          initial={false}
           variants={
             cursorAnim
               ? {
@@ -298,7 +301,7 @@ export default function RevealSectionDevClub() {
                 }
               : cursorVariants
           }
-          animate="animate"
+          animate={isReady ? "animate" : false}
         >
           <MousePointer viewBox="0 0 24 24">
             <path d="M3 3l7 18 3-7 7-3L3 3z" />
@@ -307,7 +310,12 @@ export default function RevealSectionDevClub() {
         </MovingCursor>
 
         {/* LETRAS AGRUPADAS E COMPACTAS */}
-        <LetterBox ref={dRef} variants={letterDVariants} animate="animate">
+        <LetterBox
+          ref={dRef}
+          initial={false}
+          variants={letterDVariants}
+          animate={isReady ? "animate" : false}
+        >
           <LetterText>D</LetterText>
         </LetterBox>
 
@@ -318,7 +326,12 @@ export default function RevealSectionDevClub() {
           <LetterText>V</LetterText>
         </LetterBox>
 
-        <LetterBox ref={cRef} variants={letterCVariants} animate="animate">
+        <LetterBox
+          ref={cRef}
+          initial={false}
+          variants={letterCVariants}
+          animate={isReady ? "animate" : false}
+        >
           <LetterText>C</LetterText>
         </LetterBox>
 
